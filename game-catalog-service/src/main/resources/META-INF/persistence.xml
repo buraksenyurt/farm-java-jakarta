@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+             https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
+             version="3.2">
+
+    <!-- JTA - Java Transaction API. Transaction işlemleri için kullanılan
+    standart API'dir. -->
+
+    <persistence-unit name="gameCatalogPU" transaction-type="JTA">
+        <jta-data-source>java:app/jdbc/gamecatalog</jta-data-source>
+
+        <properties>
+            <!-- EclipseLink'ten Hibernate'e geçsek bile bu özelliği
+            değiştirmemize gerek yok.
+            
+            drop-and-create, her deployment'da şemanın sıfırdan kurulmasını
+            sağlar. Özellikle öğrenme aşamasında ideal bir tercihtir ama
+            üretimde bu yöntem kullanılmaz.
+
+            Gerçek bir sistemde bunun yerini Flyway veya 
+            Liquibase gibi bir migration aracı alır.
+            
+            <property name="jakarta.persistence.schema-generation.database.action" 
+                value="drop-and-creat"/>                        
+            -->
+            
+            <!-- NOT: Flyway implementasyonu sonucu none'a çekildi. -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
+        </properties>
+    </persistence-unit>
+</persistence>

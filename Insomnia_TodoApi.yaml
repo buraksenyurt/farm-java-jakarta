@@ -1,0 +1,150 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Todo Rest Api
+meta:
+  id: wrk_df3460c217d64e7bb270ff5c3a797641
+  created: 1782306641242
+  modified: 1782306641242
+  description: ""
+collection:
+  - url: http://localhost:8080/todo-app/api/v1/todo/list
+    name: List
+    meta:
+      id: req_aa9c8e829957477389e33fc6c0d86714
+      created: 1782306645758
+      modified: 1782306697372
+      isPrivate: false
+      description: ""
+      sortKey: -1782306645758
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/todo-app/api/v1/todo/new
+    name: New
+    meta:
+      id: req_1fbfd074182143f0a20e047074df7487
+      created: 1782306705636
+      modified: 1782311117826
+      isPrivate: false
+      description: ""
+      sortKey: -1782306705636
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"task": "Walk 15 km on any weekend",
+        	"dueDate":"2026-12-12"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/todo-app/api/v1/todo/1
+    name: Get by Id
+    meta:
+      id: req_f9e72763d90f4e0084672da1caa35144
+      created: 1782306923701
+      modified: 1782311005666
+      isPrivate: false
+      description: ""
+      sortKey: -1782306923701
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/todo-app/api/v1/todo/update
+    name: Update
+    meta:
+      id: req_d87182bcc2584798bb6ac8845cbe8dcb
+      created: 1782307219351
+      modified: 1782308000693
+      isPrivate: false
+      description: ""
+      sortKey: -1782307219351
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"id": 1,
+        	"isCompleted": true
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/todo-app/api/v1/todo/1
+    name: New Request
+    meta:
+      id: req_ab8f27d7cfb843b39860eb3b4afd99bd
+      created: 1782307902826
+      modified: 1782311018095
+      isPrivate: false
+      description: ""
+      sortKey: -1782307902826
+    method: DELETE
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/todo-app/api/v1/todo/status?id=2
+    name: Complete Task
+    meta:
+      id: req_2f942f5bab6842eea4c10245e3d73664
+      created: 1782310840918
+      modified: 1782311064462
+      isPrivate: false
+      description: ""
+      sortKey: -1782310840918
+    method: POST
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_f6f937e0f0f9b9605c3548c019c9a77fbd7bac74
+    created: 1782306641245
+    modified: 1782306641245
+environments:
+  name: Base Environment
+  meta:
+    id: env_f6f937e0f0f9b9605c3548c019c9a77fbd7bac74
+    created: 1782306641243
+    modified: 1782306641243
+    isPrivate: false

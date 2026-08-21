@@ -1,0 +1,2 @@
+ALTER TABLE games
+    ADD COLUMN summary VARCHAR(1000) NULL;
