@@ -1,8 +1,13 @@
-<jdbc-connection-pool name="AuditDbPool"
-                      res-type="javax.sql.DataSource"
-                      datasource-classname="org.h2.jdbcx.JdbcDataSource">
-    <property name="url" value="jdbc:h2:~/eventsaga/auditdb;AUTO_SERVER=TRUE"/>
-    <property name="user" value="sa"/>
-    <property name="password" value=""/>
-</jdbc-connection-pool>
-<jdbc-resource pool-name="AuditDbPool" jndi-name="java:app/jdbc/auditdb"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN"
+        "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+    <jdbc-connection-pool name="AuditDbPool"
+                          res-type="javax.sql.DataSource"
+                          datasource-classname="org.h2.jdbcx.JdbcDataSource">
+        <property name="url" value="jdbc:h2:~/eventsaga/auditdb;AUTO_SERVER=TRUE"/>
+        <property name="user" value="sa"/>
+        <property name="password" value=""/>
+    </jdbc-connection-pool>
+    <jdbc-resource pool-name="AuditDbPool" jndi-name="java:app/jdbc/auditdb"/>
+</resources>

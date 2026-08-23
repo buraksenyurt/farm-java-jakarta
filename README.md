@@ -767,6 +767,29 @@ Hedeflenen kurguyu aşağıdaki zaman çizelgesi ile özetleyebiliriz.
 
 ![Saga Orchestration Sequence Diagram](./images/SagaSequence_00.png)
 
+### Testler
+
+Elimizde dört servis bulunuyor. Orkestrator servis dahil tamamı ayrı birer Java projesi. Diğer örneklerde olduğu gibi her birini Payara Micro sunucusuna deploy ederek çalıştırabiliriz. Her bir servis için farklı portlar kullanmamız gerekiyor.
+
+```bash
+# Event Service ile başlayalım. Bunu 8081 portu üzerinden çalıştırıyoruz.
+java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --port 8081 --deploy wars/saga-event-service.war
+
+# Wallet Service'i 8082 portu üzerinden çalıştırıyoruz.
+java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --port 8082 --deploy wars/saga-wallet-service.war
+
+# Booking Audit Service'i 8083 portu üzerinden çalıştırıyoruz.
+java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --port 8083 --deploy wars/saga-audit-booking-service.war
+
+# Asıl işi yapan yani rezervasyon yaptırmak için geleceğimiz ve SAGA akışını yöneten Orchestrator Service'i normal 8080 portu üzerinden çalıştırıyoruz.
+# Loglama da yaptırdığımız için logging.properties dosyasını da belirtiyoruz.
+java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --port 8080 --deploy wars/saga-orchestrator-service.war --logproperties /home/buraks/payara-micro/logging.properties
+```
+
+Test senaryolarımız aslında bir önceki örnektekine benzer.
+
+// KONTROLLER SAĞLANACAK
+
 ## FAQ
 
 - **Java EE denince aklımıza ne gelmeli?** Kurumsal çözümler geliştirmek için kullanılan bir özet spesifikasyonlar *(Abstract Specifications)* ve standartlar koleksiyonu.
