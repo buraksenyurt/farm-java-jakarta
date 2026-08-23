@@ -1,0 +1,8 @@
+<jdbc-connection-pool name="AuditDbPool"
+                      res-type="javax.sql.DataSource"
+                      datasource-classname="org.h2.jdbcx.JdbcDataSource">
+    <property name="url" value="jdbc:h2:~/eventsaga/auditdb;AUTO_SERVER=TRUE"/>
+    <property name="user" value="sa"/>
+    <property name="password" value=""/>
+</jdbc-connection-pool>
+<jdbc-resource pool-name="AuditDbPool" jndi-name="java:app/jdbc/auditdb"/>
