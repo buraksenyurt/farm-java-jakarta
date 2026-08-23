@@ -91,6 +91,22 @@ services:
     networks:
       - java-town-network
 
+  mysql-saga:
+    image: mysql:9.7
+    container_name: java-town-mysql-wallet
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=WalletRootPass123!
+      - MYSQL_DATABASE=wallet_db
+      - MYSQL_USER=wallet_user
+      - MYSQL_PASSWORD=WalletSaga123!
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_wallet_data:/var/lib/mysql
+    networks:
+      - java-town-network
+
 volumes:
   postgres_data:
   sonarqube_data:
@@ -99,6 +115,7 @@ volumes:
   openobserve_data:
   fluent_bit_data:
   mysql_data:
+  mysql_wallet_data:
 
 networks:
   java-town-network:

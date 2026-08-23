@@ -742,6 +742,26 @@ curl http://localhost:8080/event-ticketing-service/api/booking-attempts | jq
 
 ![Transaction Runtime 04](./images/TransactionRuntime_04.png)
 
+## Saga Orkestrasyon ile Dağıtık Transaction Yönetimi
+
+Bir önceki `event-ticketing-service` örneğinde transaction yönetimini tek bir servis içerisinde ele aldık. Tüm tablolarımız ve süreç ortak ve tek bir veri tabanı üzerinde yürüyordu. Ancak dağıtık sistemlerde, birden fazla servis ve veri tabanı ile çalışmak durumunda kalabiliriz. Bu durumda transaction yönetimi daha karmaşık hale gelir. Dağıtık transaction yönetiminde en sol karşılaşılan tekniklerden birisi SAGA kalıbıdır. SAGA'yı da genelde iki farklı şekilde ele alma durumu var. **Orchestration** ve **Choreography**. Orchestration yaklaşımında merkezi bir koordinatör bulunur ve tüm servislerin işlemlerini yönetir. Choreography yaklaşımında ise her servis kendi işlemlerini yönetir ve diğer servislerle iletişim kurar. `saga-orchestration` ismiyle başlayan projeler bu konuyu el aldığımız uygulama örneklerini içermekte. Özellikle 2PC *(Two-Phase Commit)* yaklaşımını ele almadık. Hedeflediğimiz konu SAGA kalıbını değerlendirmek.
+
+|**Teknik**|**Zorluk Seviyesi**|**Nasıl İşler**|**Maliyet**|
+|---------|-----------------|-------------|---------|
+|**Orchestration Saga**|Orta|Merkezi bir orkestratör (şef) servisleri sırasıyla senkron olarak çağırır. Hata olursa tamamlanmış adımları telafi edecek *(compensating)* adımlar çağırılır.|Orkestratör single point of failure olarak görülebilir ancak akışı takip etmenin en kolay yoludur.|
+|**Choreography Saga**|Yüksek|Her servis kendi işlemini yönetir ve diğer servislerle asenkron olarak iletişim kurar. Hata olursa her servis kendi telafi adımlarını çağırır.|Orkestratör yoktur, bu yüzden single point of failure yoktur ancak akışı takip etmek zordur. Outbox Pattern'e ihtiyaç duyar. RabbitMQ, Apache Kafka gibi enstrümanları gerektirir|
+|**TCC *(Try-Confirm-Cancel)***|En Zoru|Her servis üç endpoint sunar. Geçici rezerve et, onayla, iptal et gibi. Hiçbir şey geri alınamaz sadece onaylanmış olan şeyler iptal edilir.|Oldukça sağlam ve dayanıklı bir kurgu olmasına rağmen kod eforu yüksek ve karmaşıktır.|
+
+Senaryoya konu olan servisler ise şöyle;
+
+|**Service**|**Sorumluluk**|**Veri Tabanı**|
+|-----------|--------------|----------------|
+|**Event Service**|Koltu rezervasyonu + telafi *(koltukları serbest bırakmak)*|PostgreSQL|
+|**Wallet Service**|Müşteri bakiyesini düşürmek + telafi *(bakiyeyi geri yüklemek)*|MySQL|
+|**Booking Audit Service**|Commit/Rollback fark etmeksizin her denemeyi kaydeder.|H2|
+
+> Örnek için gerekli sql script'leri `sagaOrhestration` klasörü altında yer alıyor. Bunları PostgreSQL ve MySQL ortamlarında çalıştırmak yeterli. H2 versiyonunda ise uygulama başlatıldığında tablolar otomatik olarak oluşturuluyor.
+
 ## FAQ
 
 - **Java EE denince aklımıza ne gelmeli?** Kurumsal çözümler geliştirmek için kullanılan bir özet spesifikasyonlar *(Abstract Specifications)* ve standartlar koleksiyonu.
