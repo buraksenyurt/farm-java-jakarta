@@ -2,7 +2,7 @@ package com.lectures.walletservice.repository;
 
 import com.lectures.walletservice.model.Customer;
 import com.lectures.walletservice.service.CustomerNotFoundException;
-import com.lectures.walletservice.service.InsufficientBallanceException;
+import com.lectures.walletservice.service.InsufficientBalanceException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,7 +26,7 @@ public class JpaCustomerRepository implements CustomerRepository {
     @Override
     public void charge(Customer customer, BigDecimal amount) {
         if (customer.getWalletBalance().compareTo(amount) < 0) {
-            throw new InsufficientBallanceException(customer.getId(), amount, customer.getWalletBalance());
+            throw new InsufficientBalanceException(customer.getId(), amount, customer.getWalletBalance());
         }
         customer.setWalletBalance(customer.getWalletBalance().subtract(amount));
     }

@@ -2,7 +2,7 @@ package com.lectures.eventticketing.repository;
 
 import com.lectures.eventticketing.model.Customer;
 import com.lectures.eventticketing.service.CustomerNotFoundException;
-import com.lectures.eventticketing.service.InsufficientBallanceException;
+import com.lectures.eventticketing.service.InsufficientBalanceException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,7 +26,7 @@ public class JpaCustomerRepository implements CustomerRepository {
     @Override
     public void chargeWallet(Customer customer, BigDecimal amount) {
         if (customer.getWalletBalance().compareTo(amount) < 0) {
-            throw new InsufficientBallanceException(customer.getId(), amount, customer.getWalletBalance());
+            throw new InsufficientBalanceException(customer.getId(), amount, customer.getWalletBalance());
         }
         customer.setWalletBalance(customer.getWalletBalance().subtract(amount));
     }
