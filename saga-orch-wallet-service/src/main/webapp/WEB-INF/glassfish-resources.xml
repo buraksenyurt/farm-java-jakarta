@@ -1,0 +1,12 @@
+<jdbc-connection-pool name="WalletSagaPool"
+                      res-type="javax.sql.DataSource"
+                      datasource-classname="com.mysql.cj.jdbc.MysqlDataSource">
+    <property name="ServerName" value="localhost"/>
+    <property name="PortNumber" value="3307"/>
+    <property name="DatabaseName" value="wallet_db"/>
+    <property name="User" value="wallet_user"/>
+    <property name="Password" value="WalletSaga123!"/>
+    <property name="sslMode" value="DISABLED"/>
+    <property name="allowPublicKeyRetrieval" value="true"/>
+</jdbc-connection-pool>
+<jdbc-resource pool-name="WalletSagaPool" jndi-name="java:app/jdbc/walletsaga"/>
