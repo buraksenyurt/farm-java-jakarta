@@ -1,0 +1,6 @@
+<persistence-unit name="eventSagaPU" transaction-type="JTA">
+    <jta-data-source>java:app/jdbc/eventsaga</jta-data-source>
+    <properties>
+        <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
+    </properties>
+</persistence-unit>

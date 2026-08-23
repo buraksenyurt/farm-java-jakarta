@@ -759,8 +759,13 @@ Senaryoya konu olan servisler ise şöyle;
 |**Event Service**|Koltu rezervasyonu + telafi *(koltukları serbest bırakmak)*|PostgreSQL|
 |**Wallet Service**|Müşteri bakiyesini düşürmek + telafi *(bakiyeyi geri yüklemek)*|MySQL|
 |**Booking Audit Service**|Commit/Rollback fark etmeksizin her denemeyi kaydeder.|H2|
+|**Orchestrator Service**|Saga akışını yöneten servisimiz.|Yok|
 
 > Örnek için gerekli sql script'leri `sagaOrhestration` klasörü altında yer alıyor. Bunları PostgreSQL ve MySQL ortamlarında çalıştırmak yeterli. H2 versiyonunda ise uygulama başlatıldığında tablolar otomatik olarak oluşturuluyor.
+
+Hedeflenen kurguyu aşağıdaki zaman çizelgesi ile özetleyebiliriz.
+
+![Saga Orchestration Sequence Diagram](./images/SagaSequence_00.png)
 
 ## FAQ
 
