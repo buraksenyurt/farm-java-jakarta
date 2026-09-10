@@ -1,6 +1,6 @@
 package com.lectures.memo.app.resource;
 
-import com.lectures.memo.app.entity.Memo;
+import com.lectures.memo.app.model.Memo;
 import com.lectures.memo.app.service.MemoService;
 import com.lectures.memo.app.service.dto.MemoStats;
 import jakarta.inject.Inject;

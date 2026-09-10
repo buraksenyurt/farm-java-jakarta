@@ -1,4 +1,4 @@
-package com.lectures.memo.app.entity;
+package com.lectures.memo.app.model;
 
 public enum MemoCategory {
     SCIENCE,

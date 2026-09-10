@@ -1,6 +1,6 @@
 package com.lectures.todoapp.event;
 
-import com.lectures.todoapp.entity.Todo;
+import com.lectures.todoapp.model.Todo;
 
 /*
     Bir todo oluşturulduğunda sisteme bunu duyurabileceğimi event sınıfı

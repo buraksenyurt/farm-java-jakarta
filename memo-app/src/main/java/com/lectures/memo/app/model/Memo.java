@@ -1,4 +1,4 @@
-package com.lectures.memo.app.entity;
+package com.lectures.memo.app.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

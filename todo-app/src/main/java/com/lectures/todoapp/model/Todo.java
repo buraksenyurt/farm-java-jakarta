@@ -1,4 +1,4 @@
-package com.lectures.todoapp.entity;
+package com.lectures.todoapp.model;
 
 import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.lectures.todoapp.resource;
 
-import com.lectures.todoapp.entity.Todo;
+import com.lectures.todoapp.model.Todo;
 import com.lectures.todoapp.event.TodoCreatedEvent;
 import com.lectures.todoapp.interceptor.LogExecutionTime;
 import com.lectures.todoapp.service.TodoService;

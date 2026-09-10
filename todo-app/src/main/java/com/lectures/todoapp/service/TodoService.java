@@ -1,6 +1,6 @@
 package com.lectures.todoapp.service;
 
-import com.lectures.todoapp.entity.Todo;
+import com.lectures.todoapp.model.Todo;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

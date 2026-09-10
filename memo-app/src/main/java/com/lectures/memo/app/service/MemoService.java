@@ -1,6 +1,6 @@
 package com.lectures.memo.app.service;
 
-import com.lectures.memo.app.entity.Memo;
+import com.lectures.memo.app.model.Memo;
 import com.lectures.memo.app.service.dto.CategoryCount;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
