@@ -1,12 +1,12 @@
 # Kurumsal Çözümler (Enterprise Solutions) için Java
 
-Kurumsal projeleri düşündüğümüzde hepsinin belli başlı temel ve aynı zamanda ortak ihtiyaçları olduğunu görürüz. Veri saklama *(Persistence)*, güvenlik *(Security)*, web servisleri *(Web Services)*, transaction yönetimi, gevşek bağlı yapılar *(Loose Coupling)* vb Bu değişmeyen ihtiyaçlarda soyutlamaların *(Abstraction)* standartlaştırılması da önemlidir. Asıl implementasyon detayları bu soyutlamaların üzerinde şekillenir. Ana prensip olarak Java Enterprise Edition (Java EE) veya Jakarta EE gibi çatılar bu soyutlamaları standartlaştırmak için ortaya çıkmıştır.
+Kurumsal projeleri düşündüğümüzde hepsinin belli başlı temel ve aynı zamanda ortak ihtiyaçları olduğunu görürüz. Veri saklama *(Persistence)*, güvenlik *(Security)*, web servisleri *(Web Services)*, transaction yönetimi, gevşek bağlı yapılar *(Loose Coupling)* vb. Bu değişmeyen ihtiyaçlarda soyutlamaların *(Abstraction)* standartlaştırılması da önemlidir. Asıl implementasyon detayları bu soyutlamaların üzerinde şekillenir. Ana prensip olarak Java Enterprise Edition (Java EE) veya Jakarta EE gibi çatılar bu soyutlamaları standartlaştırmak için ortaya çıkmıştır.
 
 Bu noktada bazı temel kavramları bilmekte yarar var.
 
 ## Application Server
 
-Örneğin uygulama sunucları *(Application Server)* kurumsal çözümlerin önemli bir parçasıdır. Loglama, hata yönetimi, REST uç noktaları, JSON standartları, CDI *(Contexts and Dependency Injection)*, JPA *(Java Persistence API)*, JMS *(Java Message Service)*, EJB *(Enterprise Java Beans)* gibi kurumsal çözümlerde sıkça ihtiyaç duyulan soyutlamaları standartlaştırırlar. Bu sayede geliştiriciler uygulama sunucusunun sağladığı standartları kullanarak iş mantığını geliştirmeye odaklanabilirler. Bazı popüler uygulama sunucuları şunlardır:
+Örneğin uygulama sunucuları *(Application Server)* kurumsal çözümlerin önemli bir parçasıdır. Loglama, hata yönetimi, REST uç noktaları, JSON standartları, CDI *(Contexts and Dependency Injection)*, JPA *(Java Persistence API)*, JMS *(Java Message Service)*, EJB *(Enterprise Java Beans)* gibi kurumsal çözümlerde sıkça ihtiyaç duyulan soyutlamaları standartlaştırırlar. Bu sayede geliştiriciler uygulama sunucusunun sağladığı standartları kullanarak iş mantığını geliştirmeye odaklanabilirler. Bazı popüler uygulama sunucuları şunlardır:
 
 - [IBM Open Liberty](https://openliberty.io/)
 - [Payara Server *(Glassfish)*](https://www.payara.fish/)
@@ -20,27 +20,27 @@ JSR, Java topluluğu tarafından önerilen ve Java platformuna eklenmesi düşü
 
 ## Reference Implementation *(RI)*
 
-Özet JSR'ların *(Abstract Specifications)* asıl implementasyonlarıdır. Örneğin JAX-RS için referans implementasyon olarak [Jersey](https://eclipse-ee4j.github.io/jersey/) kullanılabilir. Hatta Java EE'ın kendisi aslında bir JSR *(Java Specification Request)* olarak düşünülebilir. Java EE 8 sürümü [JSR 366](https://jcp.org/en/jsr/detail?id=366) olarak tanımlanmıştır ve Glassfish bu JSR'ın örnek bir implementasyonudur *(RI - Reference Implementation)*.
+Soyut JSR'ların *(Abstract Specifications)* asıl implementasyonlarıdır. Örneğin JAX-RS için referans implementasyon olarak [Jersey](https://eclipse-ee4j.github.io/jersey/) kullanılabilir. Hatta Java EE'nin kendisi aslında bir JSR *(Java Specification Request)* olarak düşünülebilir. Java EE 8 sürümü [JSR 366](https://jcp.org/en/jsr/detail?id=366) olarak tanımlanmıştır ve Glassfish bu JSR'ın örnek bir implementasyonudur *(RI - Reference Implementation)*.
 
 ## Jakarta EE
 
-[Jakarta EE](https://jakarta.ee/) Java EE'ın evrimleşmiş bir versiyonu olarak düşünülebilir. Oracle'ın Java EE'yi Eclipse Foundation'a devretmesiyle birlikte, Java EE artık Jakarta EE olarak adlandırılmaktadır. Jakarta EE, Java EE'ın tüm özelliklerini ve API'lerini içerir, ancak isimlendirme ve bazı paket değişiklikleri ile güncellenmiştir. Örneğin, `javax.*` paketleri artık `jakarta.*` olarak değişmiştir.
+[Jakarta EE](https://jakarta.ee/) Java EE'nin evrimleşmiş bir versiyonu olarak düşünülebilir. Oracle'ın Java EE'yi Eclipse Foundation'a devretmesiyle birlikte, Java EE artık Jakarta EE olarak adlandırılmaktadır. Jakarta EE, Java EE'nin tüm özelliklerini ve API'lerini içerir, ancak isimlendirme ve bazı paket değişiklikleri ile güncellenmiştir. Örneğin, `javax.*` paketleri artık `jakarta.*` olarak değişmiştir.
 
-Java ekosisteminin en önemli özelliklerinden birisi standartlar *(specifications)* ve implementasyonların *(implementations)* birbirinden kesin çizgilerle ayrılmasıdır. Alışkın olduğumuz mimarilerde genellikle ilkeleri belirleyen ve işi yapan aynı framework altında toplanır. Jakart ise sadece kuralları ve arayüzleri belirler, iş topluluk tarafından geliştirilen motorların üstünden yürütülür. Burada karşımıza üç ana bileşenin çıktığını görürüz. CDI *(Contexts and Dependency Injection)*, JPA *(Java Persistence API)* ve JAX-RS *(Java API for RESTful Web Services)*.
+Java ekosisteminin en önemli özelliklerinden birisi standartlar *(specifications)* ve implementasyonların *(implementations)* birbirinden kesin çizgilerle ayrılmasıdır. Alışkın olduğumuz mimarilerde ilkeleri belirleyen taraf ile işi yapan taraf genellikle aynı framework çatısı altında toplanır. Jakarta ise yalnızca kuralları ve arayüzleri belirler; asıl işi, topluluk tarafından geliştirilen motorlar yürütür. Burada karşımıza üç ana bileşenin çıktığını görürüz. CDI *(Contexts and Dependency Injection)*, JPA *(Java Persistence API)* ve JAX-RS *(Java API for RESTful Web Services)*.
 
 ### CDI *(Contexts and Dependency Injection)*
 
-Uygulamanın sinir sistemi olarak ifade edildiği sıklıkla görülür. Nesnelerin yaşam döngülerini ve birbirlerine olan bağımlılıklarını yönetir. Sonradan .NET tarafına gelen Microsoft.Extensions.DependencyInjection kütüphanesi olarak düşünebiliriz ya da Autofac, Ninject gibi dependency injection kütüphanelerine benzetebiliriz. Diğer yandan bunu basit bir DI aracı olarak görmemek lazım. Kendi için olay yönetimi (Event/Observer) sunar. Ayrıca interceptor yapısı ile metodan girmeden önce veya çıktıktan sonra araya girip AOP *(Aspect Oriented Programming)* tarzı davranışlar sergileyebilir. Örneğin bir metodun girişinde loglama yapmak, yetkilendirme kontrolü icra ettirmek otomatik transaction işletmek gibi.
+Uygulamanın sinir sistemi olarak nitelendirildiği sıklıkla görülür. Nesnelerin yaşam döngülerini ve birbirlerine olan bağımlılıklarını yönetir. Sonradan .NET tarafına gelen Microsoft.Extensions.DependencyInjection kütüphanesi olarak düşünebiliriz ya da Autofac, Ninject gibi dependency injection kütüphanelerine benzetebiliriz. Diğer yandan bunu basit bir DI aracı olarak görmemek lazım. Kendi içinde olay yönetimi (Event/Observer) sunar. Ayrıca interceptor yapısı ile metodan girmeden önce veya çıktıktan sonra araya girip AOP *(Aspect Oriented Programming)* tarzı davranışlar sergileyebilir. Örneğin bir metodun girişinde loglama yapmak, yetkilendirme kontrolü yürütmek, otomatik transaction işletmek gibi.
 
 ### JPA *(Java Persistence API)*
 
-Uygulamanın hafızası olarak düşünebiliriz. Temelde bir arayüz ve anotasyonlar kümesidir. `@Entity`, `@Table`, `@Column` gibi anotasyonlar ile nesneleri veritabanı tablolarına eşler. Kendi başına sorgu atmaz. Bunun için JPA implementasyonları vardır. Örneğin Hibernate, EclipseLink, OpenJPA gibi. Bu implementasyonlar JPA'nın sağladığı arayüzleri kullanarak veritabanı ile iletişim kurar ve sorguları işler. Kavramsal olarak .NET tarafındaki Entity Framework veya Dapper gibi ORM *(Object-Relational Mapping)* kütüphanelerine benzetebiliriz. Hatta DbContext ve DbSet ile kurulan yap burada EntityManager üzerinden yürütülür.
+Uygulamanın hafızası olarak düşünebiliriz. Temelde bir arayüz ve anotasyonlar kümesidir. `@Entity`, `@Table`, `@Column` gibi anotasyonlar ile nesneleri veritabanı tablolarına eşler. Kendi başına sorgu atmaz. Bunun için JPA implementasyonları vardır. Örneğin Hibernate, EclipseLink, OpenJPA gibi. Bu implementasyonlar JPA'nın sağladığı arayüzleri kullanarak veritabanı ile iletişim kurar ve sorguları işler. Kavramsal olarak .NET tarafındaki Entity Framework veya Dapper gibi ORM *(Object-Relational Mapping)* kütüphanelerine benzetebiliriz. Hatta DbContext ve DbSet ile kurulan yapı, burada EntityManager üzerinden yürütülür.
 
 ### JAX-RS *(Java API for RESTful Web Services)*
 
-Uygulamanın dış dünyaya açılan kapısı olarak düşünebiliriz. RESTful web servisleri oluşturmak için standart bir API sunar. `@Path`, `@GET`, `@POST`, `@PUT`, `@DELETE` gibi anotasyonlar ile HTTP isteklerini işleyen metodları tanımlar. .NET tarafındaki Route, HttGet gibi nitelikler burada `@Path`, `@Get` gibi anotasyonlarla karşılık bulur.
+Uygulamanın dış dünyaya açılan kapısı olarak düşünebiliriz. RESTful web servisleri oluşturmak için standart bir API sunar. `@Path`, `@GET`, `@POST`, `@PUT`, `@DELETE` gibi anotasyonlar ile HTTP isteklerini işleyen metodları tanımlar. .NET tarafındaki Route, HttpGet gibi nitelikler burada `@Path`, `@Get` gibi anotasyonlarla karşılık bulur.
 
-> Bu üç standard düzgün bir şekilde bir araya getirildiğinde uygulama sunucusundan bağımsız, taşınabilir ve tertemiz bir mimari elde etmiş oluruz.
+> Bu üç standart düzgün bir şekilde bir araya getirildiğinde uygulama sunucusundan bağımsız, taşınabilir ve tertemiz bir mimari elde etmiş oluruz.
 
 ## Alet Çantası
 
@@ -50,7 +50,7 @@ Nelere ihtiyacımız var?
 - [NetBeans IDE](https://netbeans.apache.org/front/main/index.html), [Eclipse IDE](https://www.eclipse.org/downloads/) veya [Visual Studio Code](https://code.visualstudio.com/) gibi kod geliştirme aracı.
 - [Insomnia](https://insomnia.rest/) veya [Postman](https://www.postman.com/) gibi REST API test araçları.
 - [Apache Maven](https://maven.apache.org/) veya [Gradle](https://gradle.org/) gibi proje yönetim ve derleme araçları.
-- [Payara Micro Server](https://payara.fish/products/payara-micro/) Micro service suncusu olarak kullanabiliriz. Hafifsiklet bir web sunucusu olarak düşünebiliriz. .NET Core ile hayatımıza giren Kestrel web sunucusuna benzetebiliriz. Özünde Payara Micro, Jakarta EE spesifikasyonlarını implement eden bir uygulama sunucusudur ve özellikle mikro servis mimarileri için tercih edilir.
+- [Payara Micro Server](https://payara.fish/products/payara-micro/) mikro servis sunucusu olarak kullanılabilir. Hafif sıklet bir web sunucusu olarak düşünebiliriz. .NET Core ile hayatımıza giren Kestrel web sunucusuna benzetebiliriz. Özünde Payara Micro, Jakarta EE spesifikasyonlarını implement eden bir uygulama sunucusudur ve özellikle mikro servis mimarileri için tercih edilir.
 
 Kendi Ubuntu sistemimde `Insomnia` kurulumunda sorun çıktı. Aşağıdaki şekilde kurabildim.
 
@@ -102,9 +102,9 @@ public class HelloResource {
 }
 ```
 
-Sonrasında projeye sağ tıklayıp `Clean and Build` ile temiz bir derleme başlatalım. Bu işlem sonraında projenin `target` isimli klasöründe `hello-world.war` isimli bir dosya oluşacaktır *(WAR' ın açılımı Web Application Resource ya da Web application ARchive)*. Bu dosya web uygulamasının paketlenmiş halidir. Bunu bir web sunucusuna deploy ederek çalıştırabiliriz. Örneğin Payara Micro sunucusu üzerinde.
+Sonrasında projeye sağ tıklayıp `Clean and Build` ile temiz bir derleme başlatalım. Bu işlem sonrasında projenin `target` isimli klasöründe `hello-world.war` isimli bir dosya oluşacaktır *(WAR'ın açılımı Web Application Resource ya da Web Application ARchive)*. Bu dosya web uygulamasının paketlenmiş halidir. Bunu bir web sunucusuna deploy ederek çalıştırabiliriz. Örneğin Payara Micro sunucusu üzerinde.
 
-Kendi ubuntu sistemimde şöyle hareket ettim; Payara Micro sunucusu indirdiğim klasörde `wars` isimli bir alt klasör açtım ve projenin derlenmiş `hello-world.war` dosyasını buraya kopyaladım. Root klasörde ise aşağıdaki komutu işlettim.
+Kendi Ubuntu sistemimde şöyle hareket ettim: Payara Micro sunucusunu indirdiğim klasörde `wars` isimli bir alt klasör açtım ve projenin derlenmiş `hello-world.war` dosyasını buraya kopyaladım. Ana klasörde ise aşağıdaki komutu çalıştırdım.
 
 ```bash
 java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --deploy wars/hello-world.war
@@ -188,7 +188,7 @@ curl http://localhost:8080/games-world/api/games
 
 ## Todo API (Daha iyi bir başlangıç)
 
-Bu giriş seviyesindeki REST servis örneğinde jakarta'nın CDI *(Contexts and Dependency Injection)* ve JPA *(Java Persistence API)* özelliklerini tam anlamıyla görme şansımız oluyor. Bu seferki örneğimiz Todo işlemleri için yine docker container olarak çalışan PostgreSQL veritabanına bağlanıyor.
+Bu giriş seviyesindeki REST servis örneğinde Jakarta'nın CDI *(Contexts and Dependency Injection)* ve JPA *(Java Persistence API)* özelliklerini tam anlamıyla görme şansımız oluyor. Bu seferki örneğimiz Todo işlemleri için yine docker container olarak çalışan PostgreSQL veritabanına bağlanıyor.
 
 ```bash
 # WAR dosyası oluştuktan sonra önceki örnekte olduğu gibi Payara Micro sunucusuna deploy edebiliriz.
@@ -259,14 +259,14 @@ Jakarta için giriş niteliğindeki bu proje tipik olarak JPA, CDI ve JAX-RS yap
 </project>
 ```
 
-- **`jakarta.jakartaee-api` için scoped bildirimi:** Maven'a sadece Jakarta EE arayüzlerini kullanacağımızı ve uygulama sunucusunun bu arayüzlerin implementasyonlarını sağlayacağını söylüyoruz. Kodun derlenmesi için bu arayüzler gerekli ancak derlenmiş çıktıya dahil edilmeyecekler *(yani WAR dosyasına)* Zira uygulamanın çalıştırılacağı sunucu *(ki burada Payara Micro'yu kullandık)* gerekli motorları *(Hibernate, RESTEasy, Weld vb)* bize çalışma zamanında sağlayacak. Bu yaklaşıma göre WAR dosyası sadee yazdığımı iş mantığını *(business logic)* barındıracaktır ve boyut olarak da çok küçük kalacaktır. Oldukça temiz ve izole bir mimari elde ediyoruz diyebilirim.
+- **`jakarta.jakartaee-api` için scoped bildirimi:** Maven'a sadece Jakarta EE arayüzlerini kullanacağımızı ve uygulama sunucusunun bu arayüzlerin implementasyonlarını sağlayacağını söylüyoruz. Kodun derlenmesi için bu arayüzler gerekli ancak derlenmiş çıktıya dahil edilmeyecekler *(yani WAR dosyasına)*. Zira uygulamanın çalıştırılacağı sunucu *(ki burada Payara Micro'yu kullandık)* gerekli motorları *(Hibernate, RESTEasy, Weld vb)* bize çalışma zamanında sağlayacak. Bu yaklaşıma göre WAR dosyası sadece yazdığımız iş mantığını *(business logic)* barındıracaktır ve boyut olarak da çok küçük kalacaktır. Oldukça temiz ve izole bir mimari elde ediyoruz diyebilirim.
 - **`postgresql` bağımlılığı:** JDBC sürücüsü olarak PostgreSQL veritabanına bağlanmak için `org.postgresql` isimli bağımlılığı ekledik. Bu sürücü, JPA implementasyonunu yapmaktadır ve veritabanı ile iletişim kurmamızı sağlar. Önceki maddede belirttiğimiz üzere bu bağımlılık **scoped** olarak belirtilmediği için WAR dosyasına dahil edilir. Bu sayede uygulama sunucusu çalıştırıldığında gerekli sürücü de WAR dosyası ile birlikte yüklenir. Uygulama sunucusunda bu sürücü mevcut olmasa bile uygulama çalışır. Burada scoped olma ve olmama halini betimlemek için de kullandık. Bu arada veritabanı bağlantı ayarlarımız `src/main/resources/META-INF/persistence.xml` dosyasında yer alıyor. Bu dosya JPA'nın konfigürasyon dosyasıdır.
 - **Jakarta EE 11.0.0-M1 sürümü:** Projeyi yazdığım tarih itibariyle kullanılan sürüm. Jakarta EE 11'in ilk milestone sürümü. Bu sürümde JPA 3.1, CDI 4.0, JAX-RS 3.1 gibi yeni versiyonlar yer alıyor.
 - **Java 21 sürümü:** Projeyi yazdığım tarih itibariyle kullanılan Java sürümü. Normalde makinede Java 25 yüklü ancak Payara Micro 7.2026.5 sürümünün Java 21 ile uyumlu olduğu yazıyordu. Bu nedenle derleme ve çalıştırma için Java 21 kullanıyoruz.
 
 ### Todo API için Testler
 
-Örnek HTTP taleplerini Insomnia ile çalıştırabiliriz. [Yaml formatındaki Insomnia çıktısı şurada](Insomnia_TodoApi.yaml) Yani bu dosyayı Insomnia'ya import ederek testleri kolayca yapabilirsiniz.
+Örnek HTTP taleplerini Insomnia ile çalıştırabiliriz. [Yaml formatındaki Insomnia çıktısını şurada bulabilirsiniz](Insomnia_TodoApi.yaml). Bu dosyayı Insomnia'ya import ederek testleri kolayca yapabilirsiniz.
 
 ![Insomnia Runtime 00](./images/InsomniaRuntime_00.png)
 
@@ -321,17 +321,17 @@ mvn clean package
 java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --deploy wars/cdi-concept.war
 ```
 
-Yine Insomnia veya curl komutları ile sonuçları test edebiliriz. CreditCardProcessor bileşeni her talepte bir kez oluşturulur. Ancak CryptoProcessor bileşeni uygulama seviyesinde bir kez oluşturulur. Bu `@RequestScoped` ve `@ApplicationScoped` anotasyonları kullanılması halinde CDI' ın nasıl davrandığını da gösterir.
+Yine **Insomnia** veya **curl** komutları ile sonuçları test edebiliriz. **CreditCardProcessor** bileşeni her talepte bir kez oluşturulur. Ancak **CryptoProcessor** bileşeni uygulama seviyesinde bir kez oluşturulur. Bu durum, `@RequestScoped` ve `@ApplicationScoped` anotasyonları kullanıldığında CDI'ın nasıl davrandığını da gösterir.
 
 ![Insomnia Runtime 01](./images/InsomniaRuntime_01.png)
 
 Bu arada servis bileşenine enjekte edilen bileşenler için herhangi bir merkezi konumda Scope belirterek bir tanımlama yapmadığımıza dikkat edelim. CDI anotasyonları ile her bileşenin kendi yaşam döngüsü *(Lifecycle)* ve kapsamı *(Scope)* belirlenir ve DI tarafına bildirilir. .NET tarafında genellikle DI servislerine açık bir şekilde bu bildirimlerin yapılması gerekir.
 
-## Figures Api *(Event Kullanımı Örneği)*
+## Figures API *(Event Kullanımı Örneği)*
 
-Bu örnekte kahramanımız çizgi karakter figürleri ile ilgili stok yönetimi yapan bir servis. Pek tabii tüm domain'i ele almıyor. Sadece bir JAX-RS uyarlamasında stoğa yeni bir figüre geldiğinde dış dünyaya *(ki bu senaryoda Rabbit MQ)* bir event fırlatıyor. Jakarta türevli uygulama CDI tabanlı ve yine Payara Platformu üzerinden çalışmakta. Amaç kurumsal çözümlerde önemli kavramlardan birisi olan domain ile ilgili değişikliklerde dış sistemleri bilgilendirmek için kullanılan event tabanlı haberleşme *(Event Driven Communication)* kavramını göstermek. Bİzim senaryomuzda Rabbit MQ kullanılıyor. Ayrıca loglama için de [OpenObserve](https://github.com/openobserve/openobserve) isimli bir ürün kullanılıyor. Tüm bu servisler docker container olarak işletilmekte. *([docker-compose](docker-compose.yml) dosyasının son haline bakınız)*
+Bu örnekte kahramanımız çizgi karakter figürleri ile ilgili stok yönetimi yapan bir servis. Pek tabii tüm domain'i ele almıyor. Sadece bir JAX-RS uyarlamasında, stoğa yeni bir figür geldiğinde dış dünyaya *(ki bu senaryoda RabbitMQ)* bir event fırlatıyor. Jakarta türevli uygulama CDI tabanlı ve yine Payara Platformu üzerinden çalışmakta. Amaç kurumsal çözümlerde önemli kavramlardan birisi olan domain ile ilgili değişikliklerde dış sistemleri bilgilendirmek için kullanılan event tabanlı haberleşme *(Event Driven Communication)* kavramını göstermek. Bizim senaryomuzda RabbitMQ kullanılıyor. Ayrıca loglama için de [OpenObserve](https://github.com/openobserve/openobserve) isimli bir ürün kullanılıyor. Tüm bu servisler docker container olarak işletilmekte. *([docker-compose](docker-compose.yml) dosyasının son haline bakınız)*
 
-Uygulamanın bağımlılıkları arasında rabbitmq-client ve OpenObserve için gerekli kütüphaneler yer almakta. Bu bağımlılıklar da `pom.xml` dosyasında yer almakta. Loglama alt yapısında **Simple Logging Facade for Java (SLF4J)** kullanılıyor. [SLF4J](https://github.com/qos-ch/slf4j), farklı loglama framework'lerini soyutlayan bir arayüz sağlar. Bu sayede uygulama kodu loglama framework'ünden bağımsız olur ve farklı loglama implementasyonları kolayca değiştirilebilir. Örnekte sdk türevi kullanılıyor. Buna göre loglama çağrıları `java.util.logging` kütüphanesine bağlanır. Payara kendi loglama altyapısını JUL *(Java Util Logging)* üzerine kurmuştur. Bu sayede loglama çağrıları Payara'nın loglama altyapısına yönlendirilir ve loglar konsola veya dosyaya yazdırılabilir.
+Uygulamanın bağımlılıkları arasında rabbitmq-client ve OpenObserve için gerekli kütüphaneler yer almakta. Bu bağımlılıklar da `pom.xml` dosyasında yer almakta. Loglama alt yapısında **Simple Logging Facade for Java (SLF4J)** kullanılıyor. [SLF4J](https://github.com/qos-ch/slf4j), farklı loglama framework'lerini soyutlayan bir arayüz sağlar. Bu sayede uygulama kodu loglama framework'ünden bağımsız olur ve farklı loglama implementasyonları kolayca değiştirilebilir. Örnekte JDK türevi kullanılıyor. Buna göre loglama çağrıları `java.util.logging` kütüphanesine bağlanır. Payara kendi loglama altyapısını JUL *(Java Util Logging)* üzerine kurmuştur. Bu sayede loglama çağrıları Payara'nın loglama altyapısına yönlendirilir ve loglar konsola veya dosyaya yazdırılabilir.
 
 ### Annotated Modu
 
@@ -346,7 +346,7 @@ Projenin `WEB-INF` altında yer alan `beans.xml` dosyasında `bean-discovery-mod
 </beans>
 ```
 
-Buradaki sihir şudur; Uygulamayı dağıtacağımız **Payara** veya benzer uygulama sunucuları *(Application Servers)* bir kaynak motoruna sahiptir. Bu literatürde **WELD Engine** olarak da geçer. Bu motor CDI*(Contexts and Dependency Injection)* kural kitabına göre eklenmiş bağımlılıkları *(Dependencies)* tarar ve yönetir. Bu sayede uygulama geliştiricisi sadece iş mantığını yazar ve bağımlılıkların yönetimi CDI kitabındaki kuralları gerçekleyen bu motor tarafından yapılır. XML dosyasındaki `bean-discovery-mode` değerini okuyan bu motordur. **WildFly, JBoss EAP, GlassFish, Payara** gibi uygulama sunucuları bu motoru kendi içlerinde barındırırlar.
+Buradaki sihir şudur: Uygulamayı dağıtacağımız **Payara** veya benzer uygulama sunucuları *(Application Servers)* bir kaynak motoruna sahiptir. Bu literatürde **WELD Engine** olarak da geçer. Bu motor, CDI *(Contexts and Dependency Injection)* kural kitabına göre eklenmiş bağımlılıkları *(Dependencies)* tarar ve yönetir. Bu sayede uygulama geliştiricisi sadece iş mantığını yazar ve bağımlılıkların yönetimi CDI kitabındaki kuralları gerçekleyen bu motor tarafından yapılır. XML dosyasındaki `bean-discovery-mode` değerini okuyan bu motordur. **WildFly, JBoss EAP, GlassFish, Payara** gibi uygulama sunucuları bu motoru kendi içlerinde barındırırlar.
 
 Projeyi çalıştırıp test etmek için **target** klasöründe oluşan `inventory-events-service-1.0-SNAPSHOT.war` dosyasını **Payara Micro** sunucusuna deploy edebiliriz. Sonrasında **Insomnia** veya **curl** komutları ile test edebiliriz.
 
@@ -359,15 +359,15 @@ curl -X POST http://localhost:8080/inventory-events-service-1.0-SNAPSHOT/api/inv
      -d '{"id": "SMF-001", "name": "Super Mario", "stockQuantity": 150}'
 ```
 
-### Rabbit MQ ile Event Tabanlı Haberleşme
+### RabbitMQ ile Event Tabanlı Haberleşme
 
-Uygulama kodlarına göre RabbitMq tarafından `figure.exchange` isimli bir topic otomatik olarak oluşur ve Exchanges kısmından gözlemlenebilir. Mesajları da görmek için bir kuyruk oluşturup bu exchange'e bind edebiliriz. Örneğin `figures.debug.q` isimli bir kuyruk oluşturup `figure.exchange` ile bind edebiliriz. Kuyruğu, `Queues and Streams` sekmesinden oluşturabiliriz. Type olarak classic seçilebilir ve durable olarak işaretlenebilir. Sonrasında `Bindings` sekmesinden `figure.exchange` ile bind edebiliriz. Bu sayede kuyruk, exchange'den gelen mesajları alır ve gözlemlenebilir. Bind kısmında `Routing Key` olarak `figure.#` şeklinde bir desen kullanabiliriz ya da bu örneğe özel `figure.stock.arrived` gibi bir key de kullanabiliriz. Bu sayede sadece bu key ile gelen mesajlar kuyruk tarafından alınır. Eğer işler yolunda giderse `localhost:15672` adresinden Rabbit MQ yönetim paneline girip `Queues and Streams` sekmesinden `figures.debug.q` kuyruğunu seçtiğimizde gelen mesajları görebiliriz.
+Uygulama kodlarına göre RabbitMQ tarafında `figure.exchange` isimli bir **exchange** otomatik olarak oluşur ve **Exchanges** kısmından gözlemlenebilir. Mesajları da görmek için bir kuyruk oluşturup bu exchange'e **bind** edebiliriz. Örneğin `figures.debug.q` isimli bir kuyruk oluşturup `figure.exchange` ile bind edebiliriz. Kuyruğu, `Queues and Streams` sekmesinden oluşturabiliriz. **Type** olarak **classic** seçilebilir ve durable olarak işaretlenebilir. Sonrasında `Bindings` sekmesinden `figure.exchange` ile bind edebiliriz. Bu sayede kuyruk, exchange'den gelen mesajları alır ve gözlemlenebilir. Bind kısmında `Routing Key` olarak `figure.#` şeklinde bir desen kullanabiliriz ya da bu örneğe özel `figure.stock.arrived` gibi bir key de kullanabiliriz. Bu sayede sadece bu key ile gelen mesajlar kuyruk tarafından alınır. Eğer işler yolunda giderse `localhost:15672` adresinden RabbitMQ yönetim paneline girip `Queues and Streams` sekmesinden `figures.debug.q` kuyruğunu seçtiğimizde gelen mesajları görebiliriz.
 
 ![Rabbit Runtime 00](./images/RabbitRuntime_00.png)
 
 ## Logları OpenObserve ile İzlemek
 
-Uygulamayı buraya kadarki haliyle çalıştırdığımızda OpenObserve üzerinde bir log düşmediğini görürüz. Bunun için oluşan logları örneğin `fluent-bit` gibi bir enstrüman ile OpenObserve'a yönlendirmemiz gerekir. Ben docker kullandığım için gerekli ayarları yine docker-compose üzerinden yaptım ama ekstra bazı konfigurasyon işlemleri de gerekti. Önce docker-compose'un durumuna bakalım.
+Uygulamayı buraya kadarki haliyle çalıştırdığımızda OpenObserve üzerinde bir log düşmediğini görürüz. Bunun için oluşan logları örneğin `fluent-bit` gibi bir enstrüman ile OpenObserve'a yönlendirmemiz gerekir. Ben docker kullandığım için gerekli ayarları yine docker-compose üzerinden yaptım ama fazladan bazı konfigürasyon işlemleri de gerekti. Önce docker-compose'un durumuna bakalım.
 
 ```yml
 fluent-bit:
@@ -438,7 +438,7 @@ Bu dosyadaki bölümlere bir değerlendirelim.
     Format  json
 ```
 
-Tabii bu tamamen benim sistemime özel bir çözüm. Payara-micro sürümünü kullandığım için onunla ilgli de bir ayarlama yapmak gerekti. Bunun için payara-micro'nun kurulduğu klasöre birde `logging.properties` isimli aşağıdaki içeriğe sahip dosya eklendi.
+Tabii bu tamamen benim sistemime özel bir çözüm. **Payara Micro** sürümünü kullandığım için onunla ilgili de bir ayarlama yapmak gerekti. Bunun için Payara Micro'nun kurulduğu klasöre, aşağıdaki içeriğe sahip `logging.properties` isimli bir dosya da eklendi.
 
 ```text
 handlers=java.util.logging.FileHandler,java.util.logging.ConsoleHandler
@@ -474,7 +474,7 @@ Ancak elbette bu kendi Ubuntu sistemimde kurguladığım çözüm. Bir Payara Se
 
 ## Inventory Notification Service
 
-Bu uygulama Inventory Service tarafından fırlatılan event'lerin RabbitMQ üzerinden dinlenmesini sağlıyor. Bir nevi consumer rolünü üstlendiğini söyleyebiliriz. Yine benzer prensiplerle geliştirilen ama farklı olarak consumer rolünü üstlenen deneysel bir REST Api uygulaması söz konusu. Her zaman olduğu gibi bu uygulamayı çalıştırmak içinde `inventory-notification-service-1.0` dosyasını Payara Micro sunucusuna deploy etmemiz gerekiyor. Sonrasında Insomnia veya curl komutları ile test edebiliriz.
+Bu uygulama **Inventory Service** tarafından fırlatılan event'lerin **RabbitMQ** üzerinden dinlenmesini sağlıyor. Bir nevi consumer rolünü üstlendiğini söyleyebiliriz. Bu da yine benzer prensiplerle geliştirilen, ancak consumer rolünü üstlenen deneysel bir REST API uygulaması. Her zaman olduğu gibi, bu uygulamayı çalıştırmak için de `inventory-notification-service-1.0.war` dosyasını Payara Micro sunucusuna deploy etmemiz gerekiyor. Sonrasında Insomnia veya curl komutları ile test edebiliriz.
 
 ### Nasıl Test Edebiliriz?
 
@@ -502,7 +502,7 @@ Notification Service uygulamasında bir health endpoint yer alıyor. Servisin ay
 curl http://localhost:8081/inventory-notification-service-1.0/api/health
 ```
 
-Her şey yolunda ise Event servis tarafından bir Post mesajı gönderip logları takip edebiliriz. Fırlatılan olayın yakalanması ve buna karşılık bir log mesajının OpenObserve üzerinde gözlemlenmesi gerekiyor. Bu sayede iki process arasında event bazlı bir mesajlaşma olduğunu görebiliriz. Örneğin aşağıdaki curl komutu ile Inventory Service uygulamasına bir POST talebi gönderelim.
+Her şey yolundaysa **Event Service** tarafına bir **POST** isteği gönderip logları takip edebiliriz. Fırlatılan olayın yakalanması ve buna karşılık bir log mesajının OpenObserve üzerinde gözlemlenmesi gerekiyor. Bu sayede iki process arasında event bazlı bir mesajlaşma olduğunu görebiliriz. Örneğin aşağıdaki curl komutu ile Inventory Service uygulamasına bir POST talebi gönderelim.
 
 ```bash
 curl -X POST http://localhost:8080/inventory-events-service-1.0-SNAPSHOT/api/inventory/stock-arrival \
@@ -510,7 +510,7 @@ curl -X POST http://localhost:8080/inventory-events-service-1.0-SNAPSHOT/api/inv
   -d '{"id":"1001","name":"Can Kulod Van Dam","stockQuantity":24}'
 ```
 
-Terminalde olayların yakalandığına dair loglar görmeliyiz ancak OpenObserve üzerinden aynı sonuçları elde edemeyebiliriz. Hatırlarsanız bir önceki örnekte loglar için Fluent Bit tarafına properties dosyası eklemiştik. Her iki uygulama için de ayrı properties dosyaları hazırlayarak farklı log dosyalarına yazmalarını sağlayabilir ve OpenObserve üzerinde daha kolay gözlemleyebiliriz. Ben yine kendi ubuntu sistemimde kullandığım `payara-micro` server üzerinden ele alacağım.
+Terminalde olayların yakalandığına dair loglar görmeliyiz ancak OpenObserve üzerinden aynı sonuçları elde edemeyebiliriz. Hatırlarsanız bir önceki örnekte loglar için Fluent Bit tarafına properties dosyası eklemiştik. Her iki uygulama için de ayrı properties dosyaları hazırlayarak farklı log dosyalarına yazmalarını sağlayabilir ve OpenObserve üzerinde daha kolay gözlemleyebiliriz. Ben yine kendi Ubuntu sistemimde kullandığım `payara-micro` sunucusu üzerinden ele alacağım.
 
 Event oluşturan inventory servis logları için `logging-events.properties` isimli bir dosya oluşturdum. İçeriği şöyle;
 
@@ -560,7 +560,7 @@ Bu ayarlamalara istinaden `fluent-bit.conf` dosyasında da tüm farklı input'la
     Refresh_Interval  5
 ```
 
-Sonrasında `fluent-bit` container'ını yeniden başlatmakta yarar var ki güncel konfigurasyon ayarlarını alsın. Ancak payara tarafındaki yürütmek komutlarımız da yeni log dosyalarına yazacak şekilde güncellenmeli. Bu sayede her iki uygulamanın logları da OpenObserve üzerinde gözlemlenebilir hale gelir.
+Sonrasında `fluent-bit` container'ını yeniden başlatmakta yarar var ki güncel konfigürasyon ayarlarını alsın. Ancak **Payara** tarafındaki yürütme komutlarımız da yeni log dosyalarına yazacak şekilde güncellenmeli. Bu sayede her iki uygulamanın logları da OpenObserve üzerinde gözlemlenebilir hale gelir.
 
 ```bash
 # Önce fluent-bit container'ını yeniden başlatalım.
@@ -585,9 +585,9 @@ java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar \
 
 ## Memo App
 
-Yine Jakarta ile yazılmış olan ancak bu kez HTML ve Vanilla JavaScript ile geliştirilmiş bir web uygulaması. Bu uygulama daha önceden Rust ile yazmayı denediğim bir web uygulamasının benzeri. Gündelik olarak farklı kaynaklardan (dergiler, bültenler, kitaplar vb) defterlere aldığım notları bir web uygulaması üzerinden kayıt altına almayı hedefliyor. Backend taraf `todo-app` ile neredeyse aynı. Yani JAX-RS, CDI ve JPA kullanıyor. Frontend taraf ise HTML ve Vanilla JavaScript ile geliştirildi ve stiller için basit bootstrap kullanılıyor. Veriyi yine PostgreSQL veritabanında saklıyoruz. Dolayısıyla `docker-compose` dosyasında konuşlandırdığımız PostgreSQL container'ını ayağa kaldırmak gerekiyor.
+Yine **Jakarta** ile yazılmış olan ancak bu kez **HTML** ve **Vanilla JavaScript** ile geliştirilmiş bir web uygulaması. Bu uygulama, daha önce Rust ile yazmayı denediğim bir web uygulamasının benzeri. Gündelik olarak farklı kaynaklardan *(dergiler, bültenler, kitaplar vb)* defterlere aldığım notları bir web uygulaması üzerinden kayıt altına almayı hedefliyor. **Backend** tarafı `todo-app` ile neredeyse aynı. Yani **JAX-RS**, **CDI** ve **JPA** kullanıyor. Frontend taraf ise HTML ve Vanilla JavaScript ile geliştirildi ve stiller için basit bootstrap kullanılıyor. Veriyi yine **PostgreSQL** veritabanında saklıyoruz. Dolayısıyla `docker-compose` dosyasında konuşlandırdığımız PostgreSQL container'ını ayağa kaldırmak gerekiyor.
 
-Tabii memo tablosunun da oluşturulması da lazım. Bunun için `src/main/resources/META-INF/persistence.xml` dosyasında `jakarta.persistence.schema-generation.database.action` özelliğini **create** veya **drop-and-create** olarak ayarlayabiliriz. Bu sayede uygulama çalıştığında JPA, MemoConfiguration dosyasındaki DataSourceDefinition özelliğinde belirtilen konfigurasyon ayarlarına göre gerekli veritabanını ve tabloları otomatik olarak oluşturacaktır *(Bunu sadece geliştirme ortamında kullanılmalı. Üretim ortamında veritabanı ve tabloların manuel olarak oluşturulması veya migration araçları ile yönetilmesi daha güvenli olur)*
+Tabii memo tablosunun da oluşturulması lazım. Bunun için `src/main/resources/META-INF/persistence.xml` dosyasında `jakarta.persistence.schema-generation.database.action` özelliğini **create** veya **drop-and-create** olarak ayarlayabiliriz. Bu sayede uygulama çalıştığında JPA, MemoConfiguration dosyasındaki DataSourceDefinition özelliğinde belirtilen konfigürasyon ayarlarına göre gerekli veritabanını ve tabloları otomatik olarak oluşturacaktır *(Bu yöntem yalnızca geliştirme ortamında kullanılmalı. Üretim ortamında veritabanı ve tabloların elle oluşturulması veya migration araçlarıyla yönetilmesi daha güvenli olur)*
 
 Son olarak `memo-app` isimli projeyi çalıştırmak için yine `payara-micro` sunucusuna deploy etmek gerekiyor.
 
@@ -609,7 +609,7 @@ java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --deploy war
 
 ## GameCatalog Service Uygulaması
 
-Bu örnekte monolitik mimarilerinin en bilinen ve en sık kullanılan örneklerinden birisi olan katmanlı mimari *(Layered Architecture)* ele alınıyor. Başlangıçta basit bir katman yapısı kullanıyoruz. Bir başka sürümünde CQRS *(Command Query Responsibility Segregation)* yaklaşımını da ele alabiliriz. Uygulamayı test etmek için her zaman olduğu gibi öncelikle build alınan WAR dosyasının Payara Micro sunucusuna deploy edilmesi gerekiyor. Sonrasında Insomnia veya curl komutları ile test edebiliriz.
+Bu örnekte, monolitik mimarilerin en bilinen ve en sık kullanılan yaklaşımlarından biri olan katmanlı mimari *(Layered Architecture)* ele alınıyor. Başlangıçta basit bir katman yapısı kullanıyoruz. Bir başka sürümünde CQRS *(Command Query Responsibility Segregation)* yaklaşımını da ele alabiliriz. Uygulamayı test etmek için her zaman olduğu gibi öncelikle build alınan **WAR** dosyasının **Payara Micro** sunucusuna deploy edilmesi gerekiyor. Sonrasında Insomnia veya curl komutları ile test edebiliriz.
 
 ```bash
 # game-catalog-service.war dosyasını oluşturmak için önce projeyi derleyelim.
@@ -627,7 +627,9 @@ Diğer denemeler için [Insomnia_GameCatalogApi.yaml](./Insomnia_GameCatalogApi.
 
 ### Repository Kullanımları
 
-Bu örnekte ilk olarak In-Memory çalışan bir repository baz alındı; `InMemoryGameRepository.java` Sonrasında docker container olarak ayağa kaldırdığımız My SQL veritabanını ele alan bir repository'ye geçtik; `JpaGameRepository.java`. Aslında bu sınıf genel olarak bir Java Persistence API *(JPA)* implementasyonu. Bu sınıfın `@ApplicationScoped` anotasyonu ile işaretlenmiş olması, CDI tarafından uygulama seviyesinde bir kez oluşturulmasını sağlar. Bu sayede uygulama boyunca aynı instance kullanılabilir. Ayrıca JPA'nın EntityManager'ı da bu sınıf içerisinde yönetiliyor. EntityManager, JPA'nın veritabanı işlemlerini gerçekleştiren ana bileşenidir ve genellikle uygulama seviyesinde bir kez oluşturulur ve tüm repository'ler tarafından paylaşılır. Uygulamayı payara-micro sunucusunda ele aldığımız için o ortama da bazı konfigurasyon ayarlarını vermemiz gerekir. Bu amaçla `persistence.xml` ve `glassfish-resources.xml` dosyaları kullanılır. Bu dosyalar, JPA ve veritabanı bağlantı ayarlarını içerir. Örneğin `persistence.xml` dosyasında veritabanı bağlantı ayarları, JPA provider'ı ve entity sınıfları belirtilir. `glassfish-resources.xml` dosyasında ise veritabanı kaynakları ve JNDI isimleri tanımlanır. Bu sayede uygulama sunucusu, JPA ve veritabanı bağlantılarını yönetebilir.
+Bu örnekte ilk olarak **In-Memory** çalışan bir repository baz alındı; `InMemoryGameRepository.java`. Sonrasında docker container olarak ayağa kaldırdığımız **MySQL** veritabanını ele alan bir repository'ye geçtik; `JpaGameRepository.java`. Aslında bu sınıf genel olarak bir Java Persistence API *(JPA)* implementasyonu. Bu sınıfın `@ApplicationScoped` anotasyonu ile işaretlenmiş olması, **CDI** tarafından uygulama seviyesinde bir kez oluşturulmasını sağlar. Bu sayede uygulama boyunca aynı instance kullanılabilir.
+
+Ayrıca **JPA**'nın **EntityManager**'ı da bu sınıf içerisinde yönetiliyor. EntityManager, JPA'nın veritabanı işlemlerini gerçekleştiren ana bileşenidir ve genellikle uygulama seviyesinde bir kez oluşturulur ve tüm repository'ler tarafından paylaşılır. Uygulamayı **payara-micro** sunucusunda ele aldığımız için o ortama da bazı konfigürasyon ayarlarını vermemiz gerekir. Bu amaçla `persistence.xml` ve `glassfish-resources.xml` dosyaları kullanılır. Bu dosyalar, JPA ve veritabanı bağlantı ayarlarını içerir. Örneğin `persistence.xml` dosyasında veritabanı bağlantı ayarları, JPA provider'ı ve entity sınıfları belirtilir. `glassfish-resources.xml` dosyasında ise veritabanı kaynakları ve **JNDI** isimleri tanımlanır. Bu sayede uygulama sunucusu, JPA ve veritabanı bağlantılarını yönetebilir.
 
 ### Migration ve Flyway Kullanımı
 
@@ -639,17 +641,17 @@ Bu örnekte ilk olarak In-Memory çalışan bir repository baz alındı; `InMemo
 
 `drop-and-create` değeri, uygulama başlatıldığında veritabanındaki mevcut tabloların silinip yeniden oluşturulmasını sağlar. Bu, geliştirme ve test aşamalarında kullanışlıdır çünkü veritabanı şemasını hızlı bir şekilde sıfırlayabiliriz. Ancak bir handikapı vardır veriler sıfırlanır. Bu yüzden klasik olarak bir migration düzeneği kurgulamak gerekiyor. Örneğin RedGate'in [Flyway](https://flywaydb.org/) veya [Liquibase](https://www.liquibase.org/) gibi araçlar kullanarak veritabanı şemasını yönetebiliriz.
 
-Bir .Net geliştiricisi için Entity Framework tarafındaki gibi Code First yaklaşımları Java eko sisteminde göremeyebiliriz. Bu son derece doğaldır zira felsefi olarak migration dosyalarının elle yazılmış, gözden geçirilmiş SQL betikleri olması tercih edilir. Zira otomatik üretilen migration'lar semantik olarak belirsiz değişikliklerde(rename işlemi gibi) veri kaybına yol açabilir. Entity Framework tarafı da zaten bu riski taşır ama Java dünyasında bu riske karşı geçmişten beri gelen ve temkinli davranmayı merkeze alan bir gelenek olduğunu söylemek yanlış olmaz.
+Bir .NET geliştiricisi, **Entity Framework** tarafındaki **Code First** benzeri yaklaşımları Java ekosisteminde göremeyebilir. Bu son derece doğaldır; zira felsefi olarak migration dosyalarının elle yazılmış, gözden geçirilmiş SQL betikleri olması tercih edilir. Çünkü otomatik üretilen migration'lar, semantik olarak belirsiz değişikliklerde *(rename işlemi gibi)* veri kaybına yol açabilir. Entity Framework tarafı da zaten bu riski taşır ama Java dünyasında bu riske karşı geçmişten beri gelen ve temkinli davranmayı merkeze alan bir gelenek olduğunu söylemek yanlış olmaz.
 
 Flyway implementasyonunu kısaca özetleyelim;
 
 - Öncelikle MySQL docker container'ı silip tekrar ayağa kaldırdık. Taze bir başlangıç için.
 - Flyway ile ilgili bağımlılıkları `pom.xml` dosyasına ekledik.
 - `src/main/resources/db/migration` dizini altında migration dosyalarını oluşturduk. Bu dizin, Flyway'in varsayılan olarak migration dosyalarını aradığı yer. Örnek olarak **games** tablosunun oluşturulması ve örnek bir alanın eklenmesi işlemlerini sırasıyla `V1__create_games_table.sql` ve `V2__add_summary_column.sql` dosyalarında gerçekleştirdik. Dosya isimlendirmesi Flyway tarafından belirlenen bir konvansiyona uygun olmalı. Örneğin `V1__create_games_table.sql` dosyası, ilk migration'ı temsil eder ve `games` tablosunun oluşturulmasını sağlar. `V2__add_summary_column.sql` dosyası ise ikinci migration'ı temsil eder ve `games` tablosuna `summary` isimli yeni bir sütun ekler.
-- Pek tabii **summary* alanının Game entity sınıfına da eklenmesi gerekir.
+- Pek tabii **summary** alanının Game entity sınıfına da eklenmesi gerekir.
 - Migration işlemlerini uygulama başlarken otomatik olarak gerçekleştirmek ya da varsa yeni versiyonları işlettirmek adına işleri kolaylaştıracak bir bileşen yazdık; `FlywayMigrationRunner.java`.
 
-Bu işlemler sonrasında uygulama tekrardan çalıştırılabilir. İlk çalıştırma esnasında `payara-micro` tarafındaki sunucu loglarında Flyway tarafından migration işlemlerinin başarıyla tamamlandığını görmemiz gerekiz.
+Bu işlemler sonrasında uygulama tekrardan çalıştırılabilir. İlk çalıştırma esnasında `payara-micro` tarafındaki sunucu loglarında Flyway tarafından migration işlemlerinin başarıyla tamamlandığını görmemiz gerekir.
 
 ![Flyway Migration Log](./images/FlywayLog_00.png)
 
@@ -666,7 +668,7 @@ Artık yeni bir tablo ekleme, kolon değişikliği yapma gibi işlemlere ihtiya�
 
 ## Transaction Kullanım Örneği (event-ticketing-service Uygulaması)
 
-Bu örnekte amaç bir bilet rezervasyon işlemini transaction bütünlüğü içerisinde ele almaktır. Örnekte PostgreSQL veritabanı kullanılmakta ve her zaman olduğu gibi docker container olarak ayağa kaldırılmakta. Örnek veritabanımızda etkinlik *(events)*, müşteri *(customers)* ve rezervasyon *(bookings)* tabloları yer almakta. Ayrıca başarılı/başarısız transaction'lar dahil tüm işlemleri kayıt altına aldığımız bir tablo daha bulunuyor *(booking_attempts)*. Veritabanı tablolarının oluşturmak için kullanacağımız script dosyası da [burada](./sql/eventTicketing.sql) yer almakta.
+Bu örnekte amaç bir bilet rezervasyon işlemini transaction bütünlüğü içerisinde ele almaktır. Örnekte PostgreSQL veritabanı kullanılmakta ve her zaman olduğu gibi docker container olarak ayağa kaldırılmakta. Örnek veritabanımızda etkinlik *(events)*, müşteri *(customers)* ve rezervasyon *(bookings)* tabloları yer almakta. Ayrıca başarılı/başarısız transaction'lar dahil tüm işlemleri kayıt altına aldığımız bir tablo daha bulunuyor *(booking_attempts)*. Veritabanı tablolarını oluşturmak için kullanacağımız script dosyası da [burada](./sql/eventTicketing.sql) yer almakta.
 
 Uygulamayı ayağa kaldırmak için diğer örneklerde de olduğu gibi önce `event-ticketing-service.war` dosyasını Payara Micro sunucusuna deploy etmemiz gerekiyor. Sonrasında Insomnia veya curl komutları ile test edebiliriz.
 
@@ -744,24 +746,26 @@ curl http://localhost:8080/event-ticketing-service/api/booking-attempts | jq
 
 ## Saga Orkestrasyon ile Dağıtık Transaction Yönetimi
 
-Bir önceki `event-ticketing-service` örneğinde transaction yönetimini tek bir servis içerisinde ele aldık. Tüm tablolarımız ve süreç ortak ve tek bir veri tabanı üzerinde yürüyordu. Ancak dağıtık sistemlerde, birden fazla servis ve veri tabanı ile çalışmak durumunda kalabiliriz. Bu durumda transaction yönetimi daha karmaşık hale gelir. Dağıtık transaction yönetiminde en sol karşılaşılan tekniklerden birisi SAGA kalıbıdır. SAGA'yı da genelde iki farklı şekilde ele alma durumu var. **Orchestration** ve **Choreography**. Orchestration yaklaşımında merkezi bir koordinatör bulunur ve tüm servislerin işlemlerini yönetir. Choreography yaklaşımında ise her servis kendi işlemlerini yönetir ve diğer servislerle iletişim kurar. `saga-orchestration` ismiyle başlayan projeler bu konuyu el aldığımız uygulama örneklerini içermekte. Özellikle 2PC *(Two-Phase Commit)* yaklaşımını ele almadık. Hedeflediğimiz konu SAGA kalıbını değerlendirmek.
+Bir önceki `event-ticketing-service` örneğinde **transaction** yönetimini tek bir servis içerisinde ele aldık. Tüm tablolarımız ve süreç ortak ve tek bir veri tabanı üzerinde yürüyordu. Ancak dağıtık sistemlerde, birden fazla servis ve veri tabanı ile çalışmak durumunda kalabiliriz. Bu durumda transaction yönetimi daha karmaşık hale gelir. Dağıtık transaction yönetiminde en sık karşılaşılan tekniklerden biri SAGA kalıbıdır.
+
+**SAGA** genelde iki farklı şekilde ele alınır. **Orchestration** ve **Choreography**. Orchestration yaklaşımında merkezi bir koordinatör bulunur ve tüm servislerin işlemlerini yönetir. Choreography yaklaşımında ise her servis kendi işlemlerini yönetir ve diğer servislerle iletişim kurar. `saga-orch` ismiyle başlayan projeler, bu konuyu ele aldığımız uygulama örneklerini içermekte. Özellikle 2PC *(Two-Phase Commit)* yaklaşımını ele almadık. Hedeflediğimiz konu SAGA kalıbını değerlendirmek.
 
 |**Teknik**|**Zorluk Seviyesi**|**Nasıl İşler**|**Maliyet**|
 |---------|-----------------|-------------|---------|
-|**Orchestration Saga**|Orta|Merkezi bir orkestratör (şef) servisleri sırasıyla senkron olarak çağırır. Hata olursa tamamlanmış adımları telafi edecek *(compensating)* adımlar çağırılır.|Orkestratör single point of failure olarak görülebilir ancak akışı takip etmenin en kolay yoludur.|
+|**Orchestration Saga**|Orta|Merkezi bir orkestratör (şef) servisleri sırasıyla senkron olarak çağırır. Hata olursa tamamlanmış adımları telafi edecek *(compensating)* adımlar çağrılır.|Orkestratör single point of failure olarak görülebilir ancak akışı takip etmenin en kolay yoludur.|
 |**Choreography Saga**|Yüksek|Her servis kendi işlemini yönetir ve diğer servislerle asenkron olarak iletişim kurar. Hata olursa her servis kendi telafi adımlarını çağırır.|Orkestratör yoktur, bu yüzden single point of failure yoktur ancak akışı takip etmek zordur. Outbox Pattern'e ihtiyaç duyar. RabbitMQ, Apache Kafka gibi enstrümanları gerektirir|
-|**TCC *(Try-Confirm-Cancel)***|En Zoru|Her servis üç endpoint sunar. Geçici rezerve et, onayla, iptal et gibi. Hiçbir şey geri alınamaz sadece onaylanmış olan şeyler iptal edilir.|Oldukça sağlam ve dayanıklı bir kurgu olmasına rağmen kod eforu yüksek ve karmaşıktır.|
+|**TCC *(Try-Confirm-Cancel)***|En Zoru|Her servis üç endpoint sunar. Geçici rezerve et, onayla, iptal et gibi. Hiçbir şey geri alınamaz; sadece onaylanmış olan şeyler iptal edilir.|Oldukça sağlam ve dayanıklı bir kurgu olmasına rağmen kod eforu yüksek ve karmaşıktır.|
 
 Senaryoya konu olan servisler ise şöyle;
 
 |**Service**|**Sorumluluk**|**Veri Tabanı**|
 |-----------|--------------|----------------|
-|**Event Service**|Koltu rezervasyonu + telafi *(koltukları serbest bırakmak)*|PostgreSQL|
+|**Event Service**|Koltuk rezervasyonu + telafi *(koltukları serbest bırakmak)*|PostgreSQL|
 |**Wallet Service**|Müşteri bakiyesini düşürmek + telafi *(bakiyeyi geri yüklemek)*|MySQL|
 |**Booking Audit Service**|Commit/Rollback fark etmeksizin her denemeyi kaydeder.|H2|
 |**Orchestrator Service**|Saga akışını yöneten servisimiz.|Yok|
 
-> Örnek için gerekli sql script'leri `sagaOrhestration` klasörü altında yer alıyor. Bunları PostgreSQL ve MySQL ortamlarında çalıştırmak yeterli. H2 versiyonunda ise uygulama başlatıldığında tablolar otomatik olarak oluşturuluyor.
+> Örnek için gerekli SQL script'leri `sagaOrchestration` klasörü altında yer alıyor. Bunları PostgreSQL ve MySQL ortamlarında çalıştırmak yeterli. H2 versiyonunda ise uygulama başlatıldığında tablolar otomatik olarak oluşturuluyor.
 
 Hedeflenen kurguyu aşağıdaki zaman çizelgesi ile özetleyebiliriz.
 
@@ -769,7 +773,7 @@ Hedeflenen kurguyu aşağıdaki zaman çizelgesi ile özetleyebiliriz.
 
 ### Testler
 
-Elimizde dört servis bulunuyor. Orkestrator servis dahil tamamı ayrı birer Java projesi. Diğer örneklerde olduğu gibi her birini Payara Micro sunucusuna deploy ederek çalıştırabiliriz. Her bir servis için farklı portlar kullanmamız gerekiyor.
+Elimizde dört servis bulunuyor. Orkestratör servis dahil tamamı ayrı birer Java projesidir. Diğer örneklerde olduğu gibi her birini **Payara Micro** sunucusuna deploy ederek çalıştırabiliriz. Her bir servis için farklı portlar kullanmamız gerekiyor.
 
 ```bash
 # Event Service ile başlayalım. Bunu 8081 portu üzerinden çalıştırıyoruz.
@@ -786,13 +790,13 @@ java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --port 8083 
 java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --port 8080 --deploy wars/saga-orchestrator-service.war --logproperties /home/buraks/payara-micro/logging.properties
 ```
 
-Test senaryolarımız aslında bir önceki örnektekine benzer.
+Test senaryolarımız aslında bir önceki örnektekilere benzer.
 
 // KONTROLLER SAĞLANACAK
 
 ## FAQ
 
-- **Java EE denince aklımıza ne gelmeli?** Kurumsal çözümler geliştirmek için kullanılan bir özet spesifikasyonlar *(Abstract Specifications)* ve standartlar koleksiyonu.
-- **Neden Jakarta EE diye de bir şey var?** Oracle'ın Java EE'yi Eclipse Foundation'a devretmesiyle birlikte, Java EE artık Jakarta EE olarak adlandırılmaktadır. Jakarta EE, Java EE'ın tüm özelliklerini ve API'lerini içerir, ancak isimlendirme ve bazı paket değişiklikleri ile güncellenmiştir.
-- **Peki ya Jakarta EE ile Spring Framework arasındaki farklar nelerdir?** Java EE, Spring Framework'ten etkilenmiştir ve Spring boot'ta Java EE'den etkilenmiştir. Her ikisi de iyi platformlardır ve bir karşılaştırma yapmak gereksizdir.
-- **JSR Kıslatmasını görünce ne anlamalıyız?** Java topluluğu tarafından önerilen ve Java platformuna eklenmesi düşünülen yeni özellikleri veya mevcut özelliklerde yapılacak değişiklikleri tanımlayan bir belge. Her JSR, belirli bir Java teknolojisi veya API için bir spesifikasyon sunar ve bu spesifikasyonlar, uygulama sunucuları tarafından implemente edilir. Örneğin [CDI 1.0 için JSR-299](https://jcp.org/ja/jsr/detail?id=299), [JPA 2.0 için JSR-317](https://jcp.org/ja/jsr/detail?id=317) gibi
+- **Java EE denince aklımıza ne gelmeli?** Kurumsal çözümler geliştirmek için kullanılan, soyut spesifikasyonlar *(Abstract Specifications)* ve standartlardan oluşan bir koleksiyon.
+- **Neden Jakarta EE diye de bir şey var?** Oracle'ın Java EE'yi Eclipse Foundation'a devretmesiyle birlikte, Java EE artık Jakarta EE olarak adlandırılmaktadır. Jakarta EE, Java EE'nin tüm özelliklerini ve API'lerini içerir, ancak isimlendirme ve bazı paket değişiklikleri ile güncellenmiştir.
+- **Peki ya Jakarta EE ile Spring Framework arasındaki farklar nelerdir?** Java EE, Spring Framework'ten etkilenmiştir; Spring Boot da Java EE'den etkilenmiştir. Her ikisi de iyi platformlardır ve bir karşılaştırma yapmak gereksizdir.
+- **JSR kısaltmasını görünce ne anlamalıyız?** Java topluluğu tarafından önerilen ve Java platformuna eklenmesi düşünülen yeni özellikleri veya mevcut özelliklerde yapılacak değişiklikleri tanımlayan bir belge. Her JSR, belirli bir Java teknolojisi veya API için bir spesifikasyon sunar ve bu spesifikasyonlar, uygulama sunucuları tarafından implemente edilir. Örneğin [CDI 1.0 için JSR-299](https://jcp.org/ja/jsr/detail?id=299), [JPA 2.0 için JSR-317](https://jcp.org/ja/jsr/detail?id=317) gibi
