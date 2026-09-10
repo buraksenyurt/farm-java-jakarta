@@ -1,7 +1,7 @@
 package com.lectures.memo.app.service;
 
 import com.lectures.memo.app.model.Memo;
-import com.lectures.memo.app.service.dto.CategoryCount;
+import com.lectures.memo.app.dto.CategoryCount;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -48,7 +48,7 @@ public class MemoService {
 
     public List<CategoryCount> countByCategory() {
         return entityManager.createQuery(
-                "SELECT NEW com.lectures.memo.app.service.dto.CategoryCount(m.category, COUNT(m)) "
+                "SELECT NEW com.lectures.memo.app.dto.CategoryCount(m.category, COUNT(m)) "
                 + "FROM Memo m GROUP BY m.category",
                 CategoryCount.class)
                 .getResultList();

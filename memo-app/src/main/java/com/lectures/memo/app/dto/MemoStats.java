@@ -1,4 +1,4 @@
-package com.lectures.memo.app.service.dto;
+package com.lectures.memo.app.dto;
 
 import java.util.List;
 

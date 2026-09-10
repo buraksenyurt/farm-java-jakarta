@@ -2,7 +2,7 @@ package com.lectures.memo.app.resource;
 
 import com.lectures.memo.app.model.Memo;
 import com.lectures.memo.app.service.MemoService;
-import com.lectures.memo.app.service.dto.MemoStats;
+import com.lectures.memo.app.dto.MemoStats;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
