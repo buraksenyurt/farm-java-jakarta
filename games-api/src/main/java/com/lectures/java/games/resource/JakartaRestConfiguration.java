@@ -1,4 +1,4 @@
-package com.lectures.java.games.api;
+package com.lectures.java.games.resource;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;

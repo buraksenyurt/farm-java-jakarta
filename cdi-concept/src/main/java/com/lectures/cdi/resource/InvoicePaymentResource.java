@@ -1,4 +1,4 @@
-package com.lectures.cdi.rest;
+package com.lectures.cdi.resource;
 
 import com.lectures.cdi.service.InvoiceAcceptService;
 import jakarta.enterprise.context.RequestScoped;

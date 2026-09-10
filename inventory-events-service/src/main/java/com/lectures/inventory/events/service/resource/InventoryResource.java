@@ -1,4 +1,4 @@
-package com.lectures.inventory.events.service.resources;
+package com.lectures.inventory.events.service.resource;
 
 import com.lectures.inventory.figures.messaging.Publisher;
 import com.lectures.inventory.figures.model.Figure;

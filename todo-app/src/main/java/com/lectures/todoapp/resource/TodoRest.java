@@ -1,4 +1,4 @@
-package com.lectures.todoapp.rest;
+package com.lectures.todoapp.resource;
 
 import com.lectures.todoapp.entity.Todo;
 import com.lectures.todoapp.event.TodoCreatedEvent;

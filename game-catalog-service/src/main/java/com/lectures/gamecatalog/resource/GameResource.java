@@ -1,4 +1,4 @@
-package com.lectures.gamecatalog.resources;
+package com.lectures.gamecatalog.resource;
 
 import com.lectures.gamecatalog.model.*;
 import com.lectures.gamecatalog.service.GameService;

@@ -1,4 +1,4 @@
-package com.lectures.memo.app.rest;
+package com.lectures.memo.app.resource;
 
 import com.lectures.memo.app.entity.Memo;
 import com.lectures.memo.app.service.MemoService;

@@ -1,4 +1,4 @@
-package com.lectures.java.games.api;
+package com.lectures.java.games.resource;
 
 import com.lectures.java.games.repository.GameRepository;
 import jakarta.inject.Inject;
