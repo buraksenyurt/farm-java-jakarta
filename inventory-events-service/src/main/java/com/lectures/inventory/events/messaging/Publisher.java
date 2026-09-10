@@ -1,4 +1,4 @@
-package com.lectures.inventory.figures.messaging;
+package com.lectures.inventory.events.messaging;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

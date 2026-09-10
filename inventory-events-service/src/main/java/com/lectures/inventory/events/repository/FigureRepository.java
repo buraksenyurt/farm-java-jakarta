@@ -1,6 +1,6 @@
-package com.lectures.inventory.figures.repository;
+package com.lectures.inventory.events.repository;
 
-import com.lectures.inventory.figures.model.Figure;
+import com.lectures.inventory.events.model.Figure;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.lectures.inventory.events.service.config;
+package com.lectures.inventory.events.config;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;

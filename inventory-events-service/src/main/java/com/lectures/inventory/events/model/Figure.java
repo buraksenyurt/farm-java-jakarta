@@ -1,4 +1,4 @@
-package com.lectures.inventory.figures.model;
+package com.lectures.inventory.events.model;
 
 public class Figure {
 

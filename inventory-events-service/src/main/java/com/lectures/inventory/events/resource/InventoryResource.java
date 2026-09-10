@@ -1,8 +1,8 @@
-package com.lectures.inventory.events.service.resource;
+package com.lectures.inventory.events.resource;
 
-import com.lectures.inventory.figures.messaging.Publisher;
-import com.lectures.inventory.figures.model.Figure;
-import com.lectures.inventory.figures.repository.FigureRepository;
+import com.lectures.inventory.events.messaging.Publisher;
+import com.lectures.inventory.events.model.Figure;
+import com.lectures.inventory.events.repository.FigureRepository;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
