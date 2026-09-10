@@ -1,8 +1,8 @@
 package com.lectures.eventticketing.repository;
 
 import com.lectures.eventticketing.model.Customer;
-import com.lectures.eventticketing.service.CustomerNotFoundException;
-import com.lectures.eventticketing.service.InsufficientBalanceException;
+import com.lectures.eventticketing.exception.CustomerNotFoundException;
+import com.lectures.eventticketing.exception.InsufficientBalanceException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

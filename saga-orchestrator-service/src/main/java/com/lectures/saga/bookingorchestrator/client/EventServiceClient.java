@@ -1,7 +1,7 @@
 package com.lectures.saga.bookingorchestrator.client;
 
 import com.lectures.saga.bookingorchestrator.dto.SeatRequest;
-import com.lectures.saga.bookingorchestrator.service.SagaStepException;
+import com.lectures.saga.bookingorchestrator.exception.SagaStepException;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;

@@ -1,6 +1,7 @@
 package com.lectures.saga.bookingorchestrator.service;
 
 import com.lectures.saga.bookingorchestrator.client.AuditServiceClient;
+import com.lectures.saga.bookingorchestrator.exception.SagaStepException;
 import com.lectures.saga.bookingorchestrator.client.EventServiceClient;
 import com.lectures.saga.bookingorchestrator.client.WalletServiceClient;
 import jakarta.enterprise.context.ApplicationScoped;

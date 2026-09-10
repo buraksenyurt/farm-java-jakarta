@@ -1,8 +1,8 @@
 package com.lectures.eventticketing.repository;
 
 import com.lectures.eventticketing.model.Event;
-import com.lectures.eventticketing.service.EventNotFoundException;
-import com.lectures.eventticketing.service.InsufficientCapacityException;
+import com.lectures.eventticketing.exception.EventNotFoundException;
+import com.lectures.eventticketing.exception.InsufficientCapacityException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

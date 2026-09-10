@@ -1,8 +1,8 @@
 package com.lectures.saga.eventservice.repository;
 
 import com.lectures.saga.eventservice.model.Event;
-import com.lectures.saga.eventservice.service.EventNotFoundException;
-import com.lectures.saga.eventservice.service.InsufficientCapacityException;
+import com.lectures.saga.eventservice.exception.EventNotFoundException;
+import com.lectures.saga.eventservice.exception.InsufficientCapacityException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

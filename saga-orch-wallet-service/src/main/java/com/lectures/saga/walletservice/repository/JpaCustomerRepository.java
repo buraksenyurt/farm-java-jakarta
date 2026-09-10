@@ -1,8 +1,8 @@
 package com.lectures.saga.walletservice.repository;
 
 import com.lectures.saga.walletservice.model.Customer;
-import com.lectures.saga.walletservice.service.CustomerNotFoundException;
-import com.lectures.saga.walletservice.service.InsufficientBalanceException;
+import com.lectures.saga.walletservice.exception.CustomerNotFoundException;
+import com.lectures.saga.walletservice.exception.InsufficientBalanceException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

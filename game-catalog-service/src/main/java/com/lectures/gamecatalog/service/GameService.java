@@ -1,6 +1,8 @@
 package com.lectures.gamecatalog.service;
 
 import com.lectures.gamecatalog.model.*;
+import com.lectures.gamecatalog.exception.GameBusinessValidationException;
+import com.lectures.gamecatalog.exception.GameNotFoundException;
 import com.lectures.gamecatalog.repository.GameRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

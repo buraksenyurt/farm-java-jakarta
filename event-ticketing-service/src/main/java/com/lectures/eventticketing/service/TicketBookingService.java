@@ -1,5 +1,6 @@
 package com.lectures.eventticketing.service;
 
+import com.lectures.eventticketing.exception.BookingException;
 import com.lectures.eventticketing.model.Booking;
 import com.lectures.eventticketing.model.Customer;
 import com.lectures.eventticketing.model.Event;

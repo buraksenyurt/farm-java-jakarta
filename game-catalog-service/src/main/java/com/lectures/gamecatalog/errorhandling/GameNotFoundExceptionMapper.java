@@ -1,6 +1,6 @@
 package com.lectures.gamecatalog.errorhandling;
 
-import com.lectures.gamecatalog.service.GameNotFoundException;
+import com.lectures.gamecatalog.exception.GameNotFoundException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
