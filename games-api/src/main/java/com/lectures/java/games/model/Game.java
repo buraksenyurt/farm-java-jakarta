@@ -1,4 +1,4 @@
-package com.lectures.java.games.games.model;
+package com.lectures.java.games.model;
 
 public class Game {
 

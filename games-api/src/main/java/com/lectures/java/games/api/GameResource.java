@@ -1,6 +1,6 @@
-package com.lectures.java.games.games.api;
+package com.lectures.java.games.api;
 
-import com.lectures.java.games.games.repository.GameRepository;
+import com.lectures.java.games.repository.GameRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

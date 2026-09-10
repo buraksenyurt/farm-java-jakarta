@@ -7,7 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import java.util.List;
 
 @ApplicationScoped
-public class JpaBookingAttemtpRepository implements BookingAttemptRepository {
+public class JpaBookingAttemptRepository implements BookingAttemptRepository {
 
     @PersistenceContext(unitName = "eventTicketingPU")
     private EntityManager entityManager;

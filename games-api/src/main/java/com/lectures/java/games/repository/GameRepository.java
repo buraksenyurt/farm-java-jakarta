@@ -1,6 +1,6 @@
-package com.lectures.java.games.games.repository;
+package com.lectures.java.games.repository;
 
-import com.lectures.java.games.games.model.Game;
+import com.lectures.java.games.model.Game;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.util.Collections;
 import java.util.List;
