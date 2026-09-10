@@ -1,11 +1,10 @@
-package com.lectures.memo.app.resource;
+package com.lectures.todoapp.config;
 
 import jakarta.annotation.sql.DataSourceDefinition;
-import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.core.Application;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @DataSourceDefinition(
-        name = "java:app/jdbc/memoDB",
+        name = "java:app/jdbc/todoDB",
         className = "org.postgresql.ds.PGSimpleDataSource",
         serverName = "localhost",
         portNumber = 5432,
@@ -13,7 +12,7 @@ import jakarta.ws.rs.core.Application;
         user = "johndoe",
         password = "somew0rds"
 )
-@ApplicationPath("api/v1")
-public class MemoConfiguration extends Application {
+@ApplicationScoped
+public class DataSourceConfig {
 
 }
