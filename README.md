@@ -829,6 +829,42 @@ Burada iki noktaya dikkat edelim;
 
 > Örneğimzide kullanacağımız **ADR** belgelerinin tamamı `docs/adr` dizininde yer alıyor. Bu belgeleri projenin yapısına göre **Claude Sonnet** ile oluşturduk. Elbette gerçek hayat senaryolarında bunları mimari konuda yetkin sorumluların yazması ya da bir AI agent'a yazdırılıyorsa yine yetkin insanlar tarafından denetlenmesi gerekir.
 
+### Smoke Test
+
+Hemen en basit testi örneğin domain sınıflarının varlığını kontrol eden Smoke Test'i ele alalım. Bu test, `com.lectures.archguard.domain` paketinde en az bir sınıfın bulunup bulunmadığını doğrular. Test sınıfımız `SmokeArchTest` olarak adlandırılmıştır ve `arch-guard-lab/src/test/java/com/lectures/archguard/architecture` dizininde yer almaktadır.
+
+```java
+package com.lectures.archguard.architecture;
+
+import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.junit.AnalyzeClasses;
+import com.tngtech.archunit.junit.ArchTest;
+import com.tngtech.archunit.lang.ArchRule;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+
+@AnalyzeClasses(
+        packages = "com.lectures.archguard",
+        importOptions = ImportOption.DoNotIncludeTests.class)
+class SmokeArchTest {
+
+    @ArchTest
+    static final ArchRule domain_classes_are_exists = classes()
+            .that().resideInAPackage("com.lectures.archguard.domain..")
+            .should().bePublic()
+            .as("Smoke Test: is domain classes are exists in the project?");
+}
+```
+
+Kabaca neler olduğuna bir bakalım.
+
+- `AnalyzeClasses`: Bu anotasyon, ArchUnit testinin hangi paketleri analiz edeceğini ve hangi import seçeneklerini kullanacağını belirtir. Örneğimizde `com.lectures.archguard` paketini analiz ediyoruz ve test sınıflarını dahil etmiyoruz.
+- `ArchTest`: Bu anotasyon, ArchUnit testinin bir kural olduğunu belirtir. `domain_classes_are_exists` kuralı, `com.lectures.archguard.domain` paketinde en az bir sınıfın varlığını kontrol eder. Bunun için resideInAPackage, bePublic ve as metodları kullanılır. Daha birçok işe yarar metod ve kombinasyon bulunur.
+- `as`: Bu metod, kuralın açıklamasını belirtmek için kullanılır. Test başarısız olduğunda bu açıklama hata mesajında görüntülenir. Burada kuralın ADR numarası da belirtilebilir böylece dokümantasyon ile de ilişkilendirilmiş olur.
+
+Test sınıfını çalıştırarak `com.lectures.archguard.domain` paketinde en az bir sınıfın varlığını doğrulayabiliriz.
+
+![ArchUnit_01](./images/ArchUnit_01.png)
+
 // DEVAM EDECEK
 
 ## FAQ
