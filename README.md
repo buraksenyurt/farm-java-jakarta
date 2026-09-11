@@ -806,7 +806,30 @@ java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --port 8080 
 
 Test senaryolarımız aslında bir önceki örnektekilere benzer.
 
-// KONTROLLER SAĞLANACAK
+### ADR Kurallarını İşletmek *(arch-guard-lab)*
+
+**arch-guard-lab** projesinde kurumsal çözümlerde sıklıkla kullanılan ADR *(Architecture Decision Records)* kurallarının nasıl uygulandığı ele alınmakta. ADR kuralları genellikle belli bir şablon üzerinden yazılan ve proje boyunca takip edilen belgelerdir. Bir **ADR** içerisinde genellikle tüm sistemi etkileyebilecek mimari kararlara ait bilgiler yer alır. Bir başka deyişle bir mimari kararı; bağlamı *(context)*, seçenekleri *(options considered)*, alınan karar *(decision)* ve sonuçları *(consequences)* ile birlikte kayıt altına almaktır. Bu dokümanlar çoğunlukla MADR *(Markdown Architecture Decision Records)* formatında yazılır. Burada niyet önemli. Aslında bir projenin bütününe ait standartları korumaya çalışıyoruz. Bunu sağlamanın farklı yolları olabilir. Etkili yollardan birisi **ArchUnit** kütüphanesini kullanarak bu kuralların otomatik olarak test edilmesidir. Yazmazı zahmetli olsa da birkez yazılır. Diğer alternatifler ile aşağıdaki tabloda olduğu gibi karşılaştırabiliriz.
+
+| **Alternatif** | **Yakalama Zamanı** | **Zayıf Yanı** |
+| --- | --- | --- |
+| **Code Review** | Pull Request sırasında | İnsana bağlıdır, tutarsızlık olabilir, ekip kalabalıklaştıkça kaçaklar artar |
+| **SonarQube** | Continuous Integration sırasında | Kural yazmak zordur, geri bildirimler geç gelir |
+| **Checkstyle / PMD** | Derleme sırasında | Dosya/satır seviyesinde bakar ve bağımlılık grafiğini göremez |
+| **Maven Modül Ayrımı** | Derleme sırasında | Güçlü ama ağır zira her katman için ayrı modül maliyeti yüksektir |
+| **ArchUnit** | Test sırasında veya derlemede | Derlenmiş kod gerektirir *(kaynak kod değil)*, ilk kurulumda kural yazımı öğrenilmelidir |
+
+Örnekte çok basit bir kitap ödünç verme *(Book Lending)* senaryosu ele alınıyor ve Port / Adapter enstrümanları üzerinden gidiliyor. Çok basitleşitirilmiş bir kurgu. Kabaca aşağıdaki şekildeki gibi bir kurgu söz konusu.
+
+![ArchUnit_00](./images/ArchUnit_00.png)
+
+Burada iki noktaya dikkat edelim;
+
+- Oklar her zaman içeri doğru bakıyor. **domain** modülü kimseyi tanımıyor. **api** modülü de **persistence** modülünü tanımıyor.
+- **persistence** oku yukarı bakıyor. Çünkü **JpaBookRepository**, **domain** içindeki **BookRepository** arayüzünü implemente ediyor. Bu bağımlılığın yönünü tersine çevirme *(Dependency Inversion Principle)* olarak ifade edilebilir. Örneğin **ArchUnit** ile bu kuralı test edebiliriz.
+
+> Örneğimzide kullanacağımız **ADR** belgelerinin tamamı `docs/adr` dizininde yer alıyor. Bu belgeleri projenin yapısına göre **Claude Sonnet** ile oluşturduk. Elbette gerçek hayat senaryolarında bunları mimari konuda yetkin sorumluların yazması ya da bir AI agent'a yazdırılıyorsa yine yetkin insanlar tarafından denetlenmesi gerekir.
+
+// DEVAM EDECEK
 
 ## FAQ
 
