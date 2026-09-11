@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.lectures</groupId>
+    <artifactId>farm-java-jakarta</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Jakarta Samples</name>
+    <description>
+        In this workspace, we collect Jakarta EE (CDI + JPA + JAX-RS) learning examples in a single reactor.
+        All examples are built as separate WAR files and can be deployed individually to Payara Micro.
+        The parent POM manages only the common settings such as Java version, source encoding, and plugin versions. 
+        Each module can override these settings as needed.
+        For the bulk build of all examples, run the following command in the root directory:
+        mvn clean package
+    </description>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+        <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
+    </properties>
+
+    <modules>
+        <module>cdi-concept</module>
+        <module>games-api</module>
+        <module>todo-app</module>
+        <module>memo-app</module>
+        <module>event-ticketing-service</module>
+        <module>game-catalog-service</module>
+        <module>inventory</module>
+        <module>saga-orchestration</module>
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

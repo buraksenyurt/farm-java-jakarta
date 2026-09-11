@@ -114,9 +114,41 @@ Bu komut `hello-world.war` dosyasını deploy ederek sunucuyu başlatacaktır. S
 
 ![jakarta-hello](./images/JakartaHelloWorld.png)
 
+## Proje Yapısı ve Toplu Derleme
+
+Son güncellemeler ile çalışma alanı tek bir **Maven çok modüllü (multi-module) proje** haline getirildi. Kök dizindeki `pom.xml` hem *aggregator* hem de ince bir *parent* görevi üstleniyor.
+
+- Kökten *(root)* `mvn clean package` çalıştırıldığında **tüm örnekler** tek seferde derlenir ve her biri kendi `target/` klasöründe kendi `.war` dosyasını üretir. Payara Mikro sunucusuna deploy etmek için bu `.war` dosyalarını kullanabiliriz.
+- Tek bir örnek için o modülün dizininde `mvn clean package` *(ya da kökten `mvn -pl <modül> -am clean package`)* komutunu çalıştırmak yeterlidir.
+- Birbiriyle ilişkili örnekler alt klasörlerde gruplanmıştır.
+
+```text
+farm-java-jakarta/                     <- kök: aggregator + parent pom.xml
+├── cdi-concept/
+├── games-api/
+├── todo-app/
+├── memo-app/
+├── event-ticketing-service/
+├── game-catalog-service/
+├── inventory/                         <- grup: RabbitMQ yayınla/dinle
+│   ├── inventory-events-service/
+│   └── inventory-notification-service/
+└── saga-orchestration/                <- grup: dağıtık transaction (SAGA)
+    ├── saga-orch-event-service/
+    ├── saga-orch-wallet-service/
+    ├── saga-orch-booking-audit-service/
+    └── saga-orchestrator-service/
+```
+
+Yalnızca **SAGA** örneklerini derlemek için `mvn -f saga-orchestration/pom.xml clean package`
+
+Parent POM sadece her örnekte aynı olan şeyleri yönetir. Java sürümü(`maven.compiler.release=21`), `UTF-8` kaynak kodlaması ve Maven eklenti sürümleri(`maven-compiler-plugin`, `maven-war-plugin`). Örnekler arasında **bilerek farklı** olan şeyler *(full `jakarta.jakartaee-api`-`jakarta.jakartaee-web-api`, `11.0.0-M1` ↔ `11.0.0`, WAR'a gömülen JDBC sürücüleri)* her modülün kendi `pom.xml`'inde açık bırakılmıştır. Zira öğrenmek istediğimiz bu noktaları merkezi olarak yönetmek istemiyoruz.
+
+Üretilen `.war` dosyalarının adları değişmiyor. Dolayısıyla aşağıdaki tüm deploy komutları aynen geçerlidir.
+
 ## Bir Diğer Örnek (Tam Jakarta Uyumlu)
 
-NetBeans tarafında projeyi oluştururken Web Application türünü seçip ilerledim.
+**NetBeans** tarafında projeyi oluştururken Web Application türünü seçip ilerledim.
 
 | **Alan** | **Değer** |
 | --- | --- |
@@ -127,23 +159,28 @@ NetBeans tarafında projeyi oluştururken Web Application türünü seçip ilerl
 | **Archetype** | `jakarta.jakartaee-api` |
 | **Build Final Name** | games-world |
 
-pom.xml;
+Yukarıdaki tablo projeyi NetBeans sihirbazında ilk oluştururken girdiğim değerlerdir. Depo çok modüllü hâle geldikten sonra `pom.xml` sadeleşti: ortak ayarlar *(Java sürümü, kaynak kodlama, eklenti sürümleri)* kök `farm-java-jakarta` parent POM'undan miras alınıyor, `<groupId>` de parent'tan geliyor *(`com.lectures`; kaynak paketi ise `com.lectures.java.games`)*. Modülün güncel `pom.xml`'i:
 
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.lectures.java.games</groupId>
+
+    <parent>
+        <groupId>com.lectures</groupId>
+        <artifactId>farm-java-jakarta</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
     <artifactId>games-api</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>games-api-1.0-SNAPSHOT</name>
-    
+    <name>games-api</name>
+
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>11.0.0-M1</jakartaee>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -152,30 +189,14 @@ pom.xml;
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
         <finalName>games-world</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-            </plugin>
-        </plugins>
     </build>
 </project>
 ```
 
-Proje çok basit olarak **in-memory** bir koleksiyonda tutulan bilgisayar oyun bilgilerini döndüren bir REST API sunuyor. Tabii öncelikle projenin temiz bir şekilde build olması gerekiyor. Sonrasında `target` klasöründe oluşan `games-api.war` dosyasını Payara Micro klasöründeki `wars` alt klasörüne kopyalayıp aşağıdaki komutu çalıştırabiliriz.
+Proje çok basit olarak **in-memory** bir koleksiyonda tutulan bilgisayar oyunu bilgilerini döndüren bir REST API sunuyor. Tabii öncelikle projenin temiz bir şekilde build olması gerekiyor. Sonrasında `target` klasöründe oluşan `games-world.war` dosyasını Payara Micro klasöründeki `wars` alt klasörüne kopyalayıp aşağıdaki komutu çalıştırabiliriz.
 
 ```bash
 java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --deploy wars/games-world.war
@@ -206,23 +227,30 @@ Genel olarak aşağıdaki kavramları ele aldık;
 
 ### Pom *(Project Object Model)* İçeriği Hakkında
 
-Jakarta için giriş niteliğindeki bu proje tipik olarak JPA, CDI ve JAX-RS yapılarının en temel halini kullanıyor. POM dosyası içeriğine göre söyleyebileceğimiz birçok şey var. Önce içeriğe bakalım.
+Jakarta için giriş niteliğindeki bu proje tipik olarak JPA, CDI ve JAX-RS yapılarının en temel halini kullanıyor. `pom.xml` üzerinden söyleyebileceğimiz birçok şey var.
+
+Depo çok modüllü olduğu için ortak ayarlar kök `farm-java-jakarta` parent POM'una taşınmıştır: `maven.compiler.release=21`, `UTF-8` kodlaması ve Maven eklenti sürümleri *(`maven-compiler-plugin`, `maven-war-plugin`)* oradan miras alınır. Bu yüzden `todo-app/pom.xml` yalnızca bu örneğe özgü kısımları içerir:
 
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.lectures</groupId>
+
+    <parent>
+        <groupId>com.lectures</groupId>
+        <artifactId>farm-java-jakarta</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
     <artifactId>todo-app</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>todo-app-1.0-SNAPSHOT</name>
-    
+    <name>todo-app</name>
+
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>11.0.0-M1</jakartaee>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -230,39 +258,25 @@ Jakarta için giriş niteliğindeki bu proje tipik olarak JPA, CDI ve JAX-RS yap
             <version>${jakartaee}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- PostgreSQL JDBC sürücüsü: scope verilmedi, bilerek WAR'a paketlenir -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.3</version>
         </dependency>
     </dependencies>
-    
+
     <build>
-         <finalName>todo-app</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version>
-                <configuration>
-                    <source>21</source>
-                    <target>21</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-            </plugin>
-        </plugins>
+        <finalName>todo-app</finalName>
     </build>
 </project>
 ```
 
+- **Kök parent POM:** `<parent>` bloğu ile modül kök `farm-java-jakarta` projesine bağlanır. Java sürümü, kaynak kodlama ve eklenti sürümleri oradan geldiği için çocuk `pom.xml`'de `<build><plugins>` bölümü yoktur; WAR paketleme yine `war` packaging'in varsayılan yaşam döngüsü ile çalışır.
 - **`jakarta.jakartaee-api` için scoped bildirimi:** Maven'a sadece Jakarta EE arayüzlerini kullanacağımızı ve uygulama sunucusunun bu arayüzlerin implementasyonlarını sağlayacağını söylüyoruz. Kodun derlenmesi için bu arayüzler gerekli ancak derlenmiş çıktıya dahil edilmeyecekler *(yani WAR dosyasına)*. Zira uygulamanın çalıştırılacağı sunucu *(ki burada Payara Micro'yu kullandık)* gerekli motorları *(Hibernate, RESTEasy, Weld vb)* bize çalışma zamanında sağlayacak. Bu yaklaşıma göre WAR dosyası sadece yazdığımız iş mantığını *(business logic)* barındıracaktır ve boyut olarak da çok küçük kalacaktır. Oldukça temiz ve izole bir mimari elde ediyoruz diyebilirim.
 - **`postgresql` bağımlılığı:** JDBC sürücüsü olarak PostgreSQL veritabanına bağlanmak için `org.postgresql` isimli bağımlılığı ekledik. Bu sürücü, JPA implementasyonunu yapmaktadır ve veritabanı ile iletişim kurmamızı sağlar. Önceki maddede belirttiğimiz üzere bu bağımlılık **scoped** olarak belirtilmediği için WAR dosyasına dahil edilir. Bu sayede uygulama sunucusu çalıştırıldığında gerekli sürücü de WAR dosyası ile birlikte yüklenir. Uygulama sunucusunda bu sürücü mevcut olmasa bile uygulama çalışır. Burada scoped olma ve olmama halini betimlemek için de kullandık. Bu arada veritabanı bağlantı ayarlarımız `src/main/resources/META-INF/persistence.xml` dosyasında yer alıyor. Bu dosya JPA'nın konfigürasyon dosyasıdır.
 - **Jakarta EE 11.0.0-M1 sürümü:** Projeyi yazdığım tarih itibariyle kullanılan sürüm. Jakarta EE 11'in ilk milestone sürümü. Bu sürümde JPA 3.1, CDI 4.0, JAX-RS 3.1 gibi yeni versiyonlar yer alıyor.
-- **Java 21 sürümü:** Projeyi yazdığım tarih itibariyle kullanılan Java sürümü. Normalde makinede Java 25 yüklü ancak Payara Micro 7.2026.5 sürümünün Java 21 ile uyumlu olduğu yazıyordu. Bu nedenle derleme ve çalıştırma için Java 21 kullanıyoruz.
+- **Java 21 sürümü:** Projeyi yazdığım tarih itibariyle kullanılan Java sürümü. Normalde makinede Java 25 yüklü ancak Payara Micro 7.2026.5 sürümünün Java 21 ile uyumlu olduğu yazıyordu. Bu nedenle derleme ve çalıştırma için Java 21 kullanıyoruz. Sürüm, kök parent POM'da `maven.compiler.release` ile tek yerden verilir ve tüm modüller bunu miras alır.
 
 ### Todo API için Testler
 
@@ -474,7 +488,7 @@ Ancak elbette bu kendi Ubuntu sistemimde kurguladığım çözüm. Bir Payara Se
 
 ## Inventory Notification Service
 
-Bu uygulama **Inventory Service** tarafından fırlatılan event'lerin **RabbitMQ** üzerinden dinlenmesini sağlıyor. Bir nevi consumer rolünü üstlendiğini söyleyebiliriz. Bu da yine benzer prensiplerle geliştirilen, ancak consumer rolünü üstlenen deneysel bir REST API uygulaması. Her zaman olduğu gibi, bu uygulamayı çalıştırmak için de `inventory-notification-service-1.0.war` dosyasını Payara Micro sunucusuna deploy etmemiz gerekiyor. Sonrasında Insomnia veya curl komutları ile test edebiliriz.
+Bu uygulama **Inventory Service** tarafından fırlatılan event'lerin **RabbitMQ** üzerinden dinlenmesini sağlıyor. Bir nevi consumer rolünü üstlendiğini söyleyebiliriz. Bu da yine benzer prensiplerle geliştirilen, ancak consumer rolünü üstlenen deneysel bir REST API uygulaması. Bu ikili *(events + notification)* depoda `inventory/` klasörü altında birlikte gruplanmıştır; ikisini birden `mvn -f inventory/pom.xml clean package` ile derleyebiliriz. Her zaman olduğu gibi, bu uygulamayı çalıştırmak için de `inventory-notification-service-1.0.war` dosyasını Payara Micro sunucusuna deploy etmemiz gerekiyor. Sonrasında Insomnia veya curl komutları ile test edebiliriz.
 
 ### Nasıl Test Edebiliriz?
 
@@ -748,7 +762,7 @@ curl http://localhost:8080/event-ticketing-service/api/booking-attempts | jq
 
 Bir önceki `event-ticketing-service` örneğinde **transaction** yönetimini tek bir servis içerisinde ele aldık. Tüm tablolarımız ve süreç ortak ve tek bir veri tabanı üzerinde yürüyordu. Ancak dağıtık sistemlerde, birden fazla servis ve veri tabanı ile çalışmak durumunda kalabiliriz. Bu durumda transaction yönetimi daha karmaşık hale gelir. Dağıtık transaction yönetiminde en sık karşılaşılan tekniklerden biri SAGA kalıbıdır.
 
-**SAGA** genelde iki farklı şekilde ele alınır. **Orchestration** ve **Choreography**. Orchestration yaklaşımında merkezi bir koordinatör bulunur ve tüm servislerin işlemlerini yönetir. Choreography yaklaşımında ise her servis kendi işlemlerini yönetir ve diğer servislerle iletişim kurar. `saga-orch` ismiyle başlayan projeler, bu konuyu ele aldığımız uygulama örneklerini içermekte. Özellikle 2PC *(Two-Phase Commit)* yaklaşımını ele almadık. Hedeflediğimiz konu SAGA kalıbını değerlendirmek.
+**SAGA** genelde iki farklı şekilde ele alınır. **Orchestration** ve **Choreography**. Orchestration yaklaşımında merkezi bir koordinatör bulunur ve tüm servislerin işlemlerini yönetir. Choreography yaklaşımında ise her servis kendi işlemlerini yönetir ve diğer servislerle iletişim kurar. `saga-orchestration/` klasörü altında toplanan dört modül bu konuyu ele aldığımız uygulama örneklerini içermekte. Özellikle 2PC *(Two-Phase Commit)* yaklaşımını ele almadık. Hedeflediğimiz konu SAGA kalıbını değerlendirmek.
 
 |**Teknik**|**Zorluk Seviyesi**|**Nasıl İşler**|**Maliyet**|
 |---------|-----------------|-------------|---------|
@@ -773,7 +787,7 @@ Hedeflenen kurguyu aşağıdaki zaman çizelgesi ile özetleyebiliriz.
 
 ### Testler
 
-Elimizde dört servis bulunuyor. Orkestratör servis dahil tamamı ayrı birer Java projesidir. Diğer örneklerde olduğu gibi her birini **Payara Micro** sunucusuna deploy ederek çalıştırabiliriz. Her bir servis için farklı portlar kullanmamız gerekiyor.
+Elimizde dört servis bulunuyor. Orkestratör servis dahil tamamı ayrı birer Java modülüdür ve `saga-orchestration/` klasörü altında toplanmıştır; dördünü birden `mvn -f saga-orchestration/pom.xml clean package` ile derleyebiliriz. Diğer örneklerde olduğu gibi her birini **Payara Micro** sunucusuna deploy ederek çalıştırabiliriz. Her bir servis için farklı portlar kullanmamız gerekiyor.
 
 ```bash
 # Event Service ile başlayalım. Bunu 8081 portu üzerinden çalıştırıyoruz.

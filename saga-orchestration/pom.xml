@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lectures</groupId>
+        <artifactId>farm-java-jakarta</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>saga-orchestration</artifactId>
+    <packaging>pom</packaging>
+    <name>Saga Orchestration - Dagitik Transaction Ornegi</name>
+
+    <!--
+        Four separate deployable modules together form a single SAGA scenario.
+        The services communicate with each other over HTTP (no compile-time dependency);
+        this aggregator is only for grouping and bulk building.
+        - saga-orch-event-service      : seat reservation + compensation (PostgreSQL)
+        - saga-orch-wallet-service     : balance deduction + compensation (MySQL)
+        - saga-orch-booking-audit-service : logs every attempt (H2)
+        - saga-orchestrator-service    : orchestrator managing the saga flow
+    -->
+    <modules>
+        <module>saga-orch-event-service</module>
+        <module>saga-orch-wallet-service</module>
+        <module>saga-orch-booking-audit-service</module>
+        <module>saga-orchestrator-service</module>
+    </modules>
+</project>

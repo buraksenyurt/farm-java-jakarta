@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lectures</groupId>
+        <artifactId>farm-java-jakarta</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>inventory</artifactId>
+    <packaging>pom</packaging>
+    <name>Inventory - RabbitMQ Yayinla/Dinle Ornegi</name>
+
+    <!--
+        Two separate deployable modules together form a single inventory scenario.
+        The services communicate with each other over RabbitMQ (no compile-time dependency);
+        this aggregator is only for grouping and bulk building.
+        - inventory-events-service : produces events (publisher)
+        - inventory-notification-service : listens to events (consumer)
+    -->
+    <modules>
+        <module>inventory-events-service</module>
+        <module>inventory-notification-service</module>
+    </modules>
+</project>
