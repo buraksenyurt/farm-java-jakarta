@@ -35,6 +35,7 @@
         <module>game-catalog-service</module>
         <module>inventory</module>
         <module>saga-orchestration</module>
+        <module>arch-guard-lab</module>
     </modules>
 
     <build>
