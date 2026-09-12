@@ -59,7 +59,7 @@ Crossing a layer boundary happens through interfaces (ports) declared in `domain
 
 | Rule | Test |
 | --- | --- |
-| Layer access matrix | `LayeredArchitectureArchTest.adr0001_layer_access_matrix` |
+| Layer access matrix | `LayeredArchitectureArchTest.adr0001_layers` |
 | `domain` depends on no outer layer | `LayeredArchitectureArchTest.adr0001_domain_no_outer_dependency` |
 | `api` does not bypass into `persistence` | `LayeredArchitectureArchTest.adr0001_api_persistence_no_bypass` |
 | Packages are free of cycles | `LayeredArchitectureArchTest.adr0001_packages_no_cycles` |
