@@ -1,0 +1,33 @@
+name: Architecture Rules Workflow
+
+on:
+  pull_request:
+    paths:
+      - 'arch-guard-lab/**'
+      - 'docs/adr/**'
+      - '.github/workflows/architecture.yml'
+  push:
+    branches: [ main ]
+
+jobs:
+  archunit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JDK 21 setup
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Architecture tests
+        run: mvn -B -pl arch-guard-lab -am test -Dtest='*ArchTest' -Dsurefire.failIfNoSpecifiedTests=false
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: archunit-surefire-reports
+          path: arch-guard-lab/target/surefire-reports/
