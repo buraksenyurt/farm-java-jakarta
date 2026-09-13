@@ -1,0 +1,1 @@
+[farm-java-jakarta](https://github.com/buraksenyurt/farm-java-jakarta) · Jakarta EE 11 · Payara Micro 7 · Java 21 — Kavram kartları depodaki kaynak koda göre yazılmıştır. Kod değiştiğinde kartlar da güncellenmelidir.
