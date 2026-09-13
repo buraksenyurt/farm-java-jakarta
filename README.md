@@ -1112,11 +1112,64 @@ mvn -pl arch-guard-lab test
 
 > ArchUnit kullanımı ile ilgili daha detaylı bilgi için [buradaki öğretiyi de](https://www.archunit.org/getting-started) inceleyebilirsiniz.
 
+### Kuralları CI/CD Hattına Entegre Etmek
+
+Kurumsal çözümleri düşündüğümüzde yerel bilgisayarda yaptığımızı değişiklik mutlaka bir CI/CD hattına çıkar. Özellikle bu hatlarda da ADR kurallarını kontrol ettirmek isteyebiliriz. Bunun için örneğin github tarafından bir workflow oluşturabiliriz. Bu amaçla `.github/workflows/architecture.yml` isimli bir dosya oluşturabiliriz. Aşağıdaki içerik `arch-guard-lab` için yeterli olacaktır.
+
+```yaml
+name: Architecture Rules Workflow
+
+on:
+  pull_request:
+    paths:
+      - 'arch-guard-lab/**'
+      - 'docs/adr/**'
+      - '.github/workflows/architecture.yml'
+  push:
+    branches: [ main ]
+
+jobs:
+  archunit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JDK 21 setup
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Architecture tests
+        run: mvn -B -pl arch-guard-lab -am test -Dtest='*ArchTest' -Dsurefire.failIfNoSpecifiedTests=false
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: archunit-surefire-reports
+          path: arch-guard-lab/target/surefire-reports/
+```
+
+İşte github üzerinden örnek bir çalışma zamanı çıktısı.
+
+![Workflow Actions Example](./images/AdrWorkflow.png)
+
 ---
 
 ## FAQ
 
 - **Java EE denince aklımıza ne gelmeli?** Kurumsal çözümler geliştirmek için kullanılan, soyut spesifikasyonlar *(Abstract Specifications)* ve standartlardan oluşan bir koleksiyon.
-- **Neden Jakarta EE diye de bir şey var?** Oracle'ın Java EE'yi Eclipse Foundation'a devretmesiyle birlikte, Java EE artık Jakarta EE olarak adlandırılmaktadır. Jakarta EE, Java EE'nin tüm özelliklerini ve API'lerini içerir, ancak isimlendirme ve bazı paket değişiklikleri ile güncellenmiştir.
+- **Neden Jakarta EE diye de bir şey var?** **Oracle**'ın **Java EE**'yi **Eclipse Foundation**'a devretmesiyle birlikte, Java EE artık **Jakarta EE** olarak adlandırılmaktadır. Jakarta EE, Java EE'nin tüm özelliklerini ve API'lerini içerir, ancak isimlendirme ve bazı paket değişiklikleri ile güncellenmiştir.
 - **Peki ya Jakarta EE ile Spring Framework arasındaki farklar nelerdir?** Java EE, Spring Framework'ten etkilenmiştir; Spring Boot da Java EE'den etkilenmiştir. Her ikisi de iyi platformlardır ve bir karşılaştırma yapmak gereksizdir.
 - **JSR kısaltmasını görünce ne anlamalıyız?** Java topluluğu tarafından önerilen ve Java platformuna eklenmesi düşünülen yeni özellikleri veya mevcut özelliklerde yapılacak değişiklikleri tanımlayan bir belge. Her JSR, belirli bir Java teknolojisi veya API için bir spesifikasyon sunar ve bu spesifikasyonlar, uygulama sunucuları tarafından implemente edilir. Örneğin [CDI 1.0 için JSR-299](https://jcp.org/ja/jsr/detail?id=299), [JPA 2.0 için JSR-317](https://jcp.org/ja/jsr/detail?id=317) gibi
+- **Application Server (uygulama sunucusu) tam olarak ne işe yarar?** Loglama, hata yönetimi, REST uç noktaları, CDI, JPA, JMS, EJB gibi kurumsal ihtiyaçları standart bir çatı altında sağlayan altyapıdır. Open Liberty, Payara Server, Wildfly gibi sunucular Jakarta EE spesifikasyonlarının somut *(concrete)* implementasyonlarıdır; geliştirici bu standartların üzerine iş mantığını yazar.
+- **Neden Payara Server yerine Payara Micro tercih edildi?** Payara Micro, Jakarta EE spesifikasyonlarını implemente eden hafif sıklet *(lightweight)* bir sunucudur ve tek bir `.jar` dosyası ile hızlıca ayağa kaldırılabildiği için özellikle mikro servis mimarilerinde tercih edilir. .NET tarafındaki Kestrel web sunucusuna benzetilebilir.
+- **CDI, JPA ve JAX-RS arasındaki fark nedir?** CDI bağımlılık yönetimini ve nesnelerin yaşam döngüsünü *(uygulamanın sinir sistemi)*, JPA veritabanı ile nesneler arasındaki eşlemeyi *(uygulamanın hafızası)*, JAX-RS ise dışarıya açılan RESTful servisleri *(uygulamanın kapısı)* yönetir. Üçü bir araya geldiğinde uygulama sunucusundan bağımsız, taşınabilir bir mimari elde edilir.
+- **Depo neden tek bir multi-module Maven projesi haline getirildi?** Tüm örnekleri kökten tek seferde *(`mvn clean package`)* derleyebilmek ve Java sürümü, kaynak kodlama, eklenti sürümleri gibi ortak ayarları merkezi bir parent POM üzerinden yönetebilmek için. Örnekler arasında bilerek farklı bırakılan noktalar *(`jakartaee-api` sürümleri, WAR'a gömülen JDBC sürücüleri gibi)* öğrenme amacıyla her modülün kendi `pom.xml`'inde açık tutulmuştur.
+- **RabbitMQ ile event tabanlı haberleşme neden örnekleniyor?** Kurumsal sistemlerde bir domain'de meydana gelen değişikliği *(örneğin stoğa yeni ürün gelmesi, bir siparişin tamamlanması, fatura kesilmesi, uzun sürede hazırlanan bir rapor belgesinin tamamlanması vs)* diğer sistemlere bildirmek için **Event Driven Communication** yaygın bir yaklaşımdır. `Figures API` ve `Inventory Events/Notification` servisleri bu senaryoyu `RabbitMQ exchange/queue` yapısı üzerinden gösterir. RabbitMQ tek çözüm değildir, Apache Kafka, MQTT gibi diğer mesajlaşma altyapıları da kullanılabilir. Lakin hangi senaryolarda hangisinin daha efektif olacağına dikkat etmek gerekir. Söz gelimi `pub/sub` modeli tümünde desteklenir ama hafif sıklet bir yapıda bunu Redis gibi bir key-value store üzerinden gerçekleştirmek de pekala mümkündür.
+- **Uygulama loglarını neden OpenObserve üzerinden izliyoruz?** Payara Micro tarafından üretilen loglar varsayılan olarak yalnızca dosyaya veya konsola yazılır. **Fluent Bit** gibi bir log yönlendirici *(Log Forwarder)* ile bu loglar toplanıp **OpenObserve** gibi merkezi bir gözlemlenebilirlik *(observability)* aracına aktarılabilir. Böylece birden fazla servisin logları tek bir yerden izlenebilir.
+- **JPA'daki `drop-and-create` ayarı neden production'da kullanılmamalı?** Bu ayar uygulama her başladığında mevcut tabloları silip yeniden oluşturur ve bu da doğal olarak veri kaybına yol açar *(Öneri film, 1993 yapımı Groundhog Day :D)* Bunun yerine **Flyway** veya **Liquibase** gibi migration araçlarıyla, elle yazılmış ve gözden geçirilmiş **SQL script**'lerinin kullanılması önerilir. Bu, Java ekosisteminde Entity Framework'ün Code First yaklaşımına göre daha temkinli bir gelenektir.
+- **SAGA deseni neden gerekli? Tek bir transaction yeterli olmuyor mu?** Dağıtık sistemlerde birden fazla servis ve veritabanı söz konusu olduğunda klasik transaction yönetimi yetersiz kalır. SAGA, her adımı ayrı ayrı işleyip hata durumunda telafi edici *(compensating)* adımlarla geri almaya dayanır. **Orchestration** yaklaşımında merkezi bir koordinatör rol alırken, **Choreography** yaklaşımında ise her servis kendi telafi mantığını yönetmekle yükümlüdür.
+- **ArchUnit ne işe yarar, Code Review veya SonarQube yeterli değil mi?** ArchUnit, katman bağımlılıkları, isimlendirme kuralları, domain'in framework'lerden izole tutulması gibi mimari kararları test sırasında otomatik olarak doğrular. **Code Review** insana bağlıdır ve tutarsız olabilir. **SonarQube** ise bu tür mimari kuralları yazmak için pratik değildir, daha çok statik kodun taranım dilin geleneksel ihlallerini taramak içindir. **ArchUnit** kuralları genellikle ADR *(Architecture Decision Record)* belgeleriyle ilişkilendirilerek yazılır ve **CI/CD** hattına entegre edilebilir.
