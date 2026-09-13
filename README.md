@@ -386,7 +386,7 @@ Uygulamayı buraya kadarki haliyle çalıştırdığımızda OpenObserve üzerin
 ```yml
 fluent-bit:
     image: fluent/fluent-bit:latest
-    container_name: jakarta-fluent-bit
+    container_name: java-town-fluent-bit
     volumes:
       - /home/buraks/payara-micro/logs:/var/log/payara:ro
       - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
@@ -578,7 +578,7 @@ Sonrasında `fluent-bit` container'ını yeniden başlatmakta yarar var ki günc
 
 ```bash
 # Önce fluent-bit container'ını yeniden başlatalım.
-sudo docker restart jakarta-fluent-bit
+sudo docker restart java-town-fluent-bit
 
 # Inventory Service uygulamasını 8080 portu üzerinden çalıştırıyoruz.
 java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar \
@@ -672,7 +672,7 @@ Bu işlemler sonrasında uygulama tekrardan çalıştırılabilir. İlk çalış
 Hatta docker container içerisine mysql terminali açıp migration tarihçesini ve tablomuzun güncel halini de görebiliriz.
 
 ```bash
-docker exec -it jakarta-mysql mysql -u gamecatalog_user -p gamecatalog \
+docker exec -it java-town-mysql mysql -u gamecatalog_user -p gamecatalog \
   -e "SELECT version, description, success FROM flyway_schema_history; DESCRIBE games;"
 ```
 
@@ -806,7 +806,7 @@ java -Djava.net.preferIPv4Stack=true -jar payara-micro-7.2026.5.jar --port 8080 
 
 Test senaryolarımız aslında bir önceki örnektekilere benzer.
 
-### ADR Kurallarını İşletmek *(arch-guard-lab)*
+## ADR Kurallarını İşletmek *(arch-guard-lab)*
 
 **arch-guard-lab** projesinde kurumsal çözümlerde sıklıkla kullanılan ADR *(Architecture Decision Records)* kurallarının nasıl uygulandığı ele alınmakta. ADR kuralları genellikle belli bir şablon üzerinden yazılan ve proje boyunca takip edilen belgelerdir. Bir **ADR** içerisinde genellikle tüm sistemi etkileyebilecek mimari kararlara ait bilgiler yer alır. Bir başka deyişle bir mimari kararı; bağlamı *(context)*, seçenekleri *(options considered)*, alınan karar *(decision)* ve sonuçları *(consequences)* ile birlikte kayıt altına almaktır. Bu dokümanlar çoğunlukla MADR *(Markdown Architecture Decision Records)* formatında yazılır. Burada niyet önemli. Aslında bir projenin bütününe ait standartları korumaya çalışıyoruz. Bunu sağlamanın farklı yolları olabilir. Etkili yollardan birisi **ArchUnit** kütüphanesini kullanarak bu kuralların otomatik olarak test edilmesidir. Yazmazı zahmetli olsa da birkez yazılır. Diğer alternatifler ile aşağıdaki tabloda olduğu gibi karşılaştırabiliriz.
 
