@@ -888,7 +888,182 @@ mvn -pl arch-guard-lab test
 
 ArchUnit testlerindeki ihlalleri görmek için deneyebileceğimiz örnek senarylara bakalım.
 
-// EKLENECEK
+1. Resource dosyasından servis bağımlılığını atlayıp doğrudan repository çağırmayı deneyelim.
+
+Bunun için `BookResource` sınıfında tanımlı olan servis bağımlılığı yerine doğrudan `JpaBookRepository` bileşenini kullanabiliriz.
+
+```java
+package com.lectures.archguard.api;
+
+import com.lectures.archguard.application.LoanService;
+import com.lectures.archguard.domain.Book;
+import com.lectures.archguard.domain.Isbn;
+import com.lectures.archguard.persistence.JpaBookRepository;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import java.util.List;
+import java.util.Optional;
+
+@Path("/books")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class BookResource {
+
+    // private final LoanService loanService;
+    private final JpaBookRepository jpaBookRepository;
+
+    protected BookResource() {
+        //this.loanService = null;
+        this.jpaBookRepository = null;
+    }
+
+    // @Inject
+    // public BookResource(LoanService loanService) {
+    //     this.loanService = loanService;
+    // }
+    @Inject
+    public BookResource(JpaBookRepository jpaBookRepository) {
+        this.jpaBookRepository = jpaBookRepository;
+    }
+
+    @GET
+    public List<BookView> findAll() {
+        return jpaBookRepository.findAll().stream().map(BookView::from).toList();
+        //return loanService.listAll().stream().map(BookView::from).toList();
+    }
+
+    @POST
+    @Path("/{isbn}/loans")
+    public Response borrow(@PathParam("isbn") String isbn) {
+        // Book book = loanService.borrow(new Isbn(isbn));
+        Optional<Book> book = jpaBookRepository.findByIsbn(new Isbn(isbn));
+        return Response.ok(BookView.from(book.get())).build();
+    }
+}
+```
+
+Aslında projeyi build ettiğimizde bu katman atlama ihlalinin test koşusunda yakalandığını görürüz fakat daha net görmek için doğrudan test koşusu yapalım.
+
+```bash
+# Kök klasörden çalıştırıyorsak
+mvn -pl arch-guard-lab test
+```
+
+![Test Results ADR1](./images/ArchUnit_03.png)
+
+Bu tür çıktıları dikkatlice okumak gerekir. Örneğin `target\surefire-reports` klasörün ilgili test sonucunun yazdığı bu terminal çıktısında belirtilir. Bu rapor içerisinden de detay bilgiye ulaşabiliriz. Özellikle `FAILURE!` ibaresi olan kısımlardan hangi ADR kuralının ihlal edildiği net bir şekilde görülebilir.
+
+```text
+-------------------------------------------------------------------------------
+Test set: com.lectures.archguard.architecture.LayeredArchitectureArchTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.073 s <<< FAILURE! -- in com.lectures.archguard.architecture.LayeredArchitectureArchTest
+com.lectures.archguard.architecture.LayeredArchitectureArchTest.adr0001 layers -- Time elapsed: 0.025 s <<< FAILURE!
+java.lang.AssertionError: 
+Architecture Violation [Priority: MEDIUM] - Rule 'ADR-0001: Layered architecture and dependency direction, because Dependencies should only flow inward.' was violated (4 times):
+Constructor <com.lectures.archguard.api.BookResource.<init>(com.lectures.archguard.persistence.JpaBookRepository)> has parameter of type <com.lectures.archguard.persistence.JpaBookRepository> in (BookResource.java:0)
+Field <com.lectures.archguard.api.BookResource.jpaBookRepository> has type <com.lectures.archguard.persistence.JpaBookRepository> in (BookResource.java:0)
+Method <com.lectures.archguard.api.BookResource.borrow(java.lang.String)> calls method <com.lectures.archguard.persistence.JpaBookRepository.findByIsbn(com.lectures.archguard.domain.Isbn)> in (BookResource.java:51)
+Method <com.lectures.archguard.api.BookResource.findAll()> calls method <com.lectures.archguard.persistence.JpaBookRepository.findAll()> in (BookResource.java:43)
+...
+
+com.lectures.archguard.architecture.LayeredArchitectureArchTest.adr0001 api persistence no bypass -- Time elapsed: 0.002 s <<< FAILURE!
+java.lang.AssertionError: 
+Architecture Violation [Priority: MEDIUM] - Rule 'ADR-0001: API layer should not bypass the persistence layer, because The REST endpoint should invoke business rules through the application layer.' was violated (4 times):
+Constructor <com.lectures.archguard.api.BookResource.<init>(com.lectures.archguard.persistence.JpaBookRepository)> has parameter of type <com.lectures.archguard.persistence.JpaBookRepository> in (BookResource.java:0)
+Field <com.lectures.archguard.api.BookResource.jpaBookRepository> has type <com.lectures.archguard.persistence.JpaBookRepository> in (BookResource.java:0)
+Method <com.lectures.archguard.api.BookResource.borrow(java.lang.String)> calls method <com.lectures.archguard.persistence.JpaBookRepository.findByIsbn(com.lectures.archguard.domain.Isbn)> in (BookResource.java:51)
+Method <com.lectures.archguard.api.BookResource.findAll()> calls method <com.lectures.archguard.persistence.JpaBookRepository.findAll()> in (BookResource.java:43)
+...
+```
+
+2. Domain içerisine JPA sızması
+
+Projede kullandığımız Book isimli domain sınıfından Entity notasyonu ile bir framework bağımlılığı oluşturabiliriz. Aynen aşağıdaki kod parçasında olduğu gibi.
+
+```java
+package com.lectures.archguard.domain;
+
+import java.time.LocalDate;
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+// Domain Entity
+
+@Entity
+public class Book {
+
+    @Id
+    private final Isbn isbn;
+    private final String title;
+    private final String author;
+    private boolean borrowed;
+    private LocalDate borrowedAt;
+
+    public Book(Isbn isbn, String title, String author) {
+        this.isbn = Objects.requireNonNull(isbn, "isbn");
+        this.title = Objects.requireNonNull(title, "title");
+        this.author = Objects.requireNonNull(author, "author");
+    }
+
+    public void borrow(LocalDate today) {
+        if (borrowed) {
+            throw new BookAlreadyBorrowedException(isbn);
+        }
+        this.borrowed = true;
+        this.borrowedAt = today;
+    }
+
+    public void giveBack() {
+        this.borrowed = false;
+        this.borrowedAt = null;
+    }
+
+    public Isbn isbn() {
+        return isbn;
+    }
+
+    public String title() {
+        return title;
+    }
+
+    public String author() {
+        return author;
+    }
+
+    public boolean isBorrowed() {
+        return borrowed;
+    }
+
+    public LocalDate borrowedAt() {
+        return borrowedAt;
+    }
+}
+```
+
+Yine benzer şekilde testi çalıştırdığımızda ya da Clean Build yaptığımızda bu sefer iki ADR kuralını ihlal ettiğimizi görürüz.
+
+```bash
+mvn -pl arch-guard-lab test
+```
+
+![Test Results ADR1 & ADR2](./images/ArchUnit_04.png)
+
+3. İsimlendirme sözleşmelerinden ihlal
+
+Bunu denemek oldukça basit. Örneğin **JpaBookRepository** sınıfını **BookRepositoryImpl** olarak yeniden adlandırdığımızı düşünelim. `ADR-0003` belgesinde ve `adr0003_impl_suffix_forbidden` kuralında bu durumun yasaklandığını görebiliriz.
+
+![Test Results ADR3](./images/ArchUnit_05.png)
+
+---
 
 ## FAQ
 
