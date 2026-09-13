@@ -1,4 +1,4 @@
-# C# Geliştiriciler için Kavram Sözlüğü
+# C# Geliştiricileri için Kavram Sözlüğü
 
 > **Okuma:** ~5 dk · **Kapsam:** tüm depo
 
@@ -8,7 +8,7 @@ Bu sayfa bir eşleştirme tablosudur. Karşılıklar **kavramsaldır**; birebir 
 
 | .NET | Jakarta EE | Not |
 | --- | --- | --- |
-| .NET Runtime | JVM | |
+| .NET Runtime | JVM *(Java Virtual Machine)* | |
 | ASP.NET Core | Jakarta EE Web Profile | |
 | Kestrel | Payara Micro | Payara Micro tam bir uygulama sunucusudur, yalnız web sunucusu değil |
 | `.csproj` | `pom.xml` | |
@@ -64,7 +64,7 @@ Bu sayfa bir eşleştirme tablosudur. Karşılıklar **kavramsaldır**; birebir 
 | `TransactionScope` | `@Transactional` | |
 | Connection string | JNDI adı + veri kaynağı tanımı | |
 
-## Kesişen İlgiler
+## Kesişen Kavramlar
 
 | .NET | Jakarta EE |
 | --- | --- |
@@ -80,15 +80,15 @@ Bu sayfa bir eşleştirme tablosudur. Karşılıklar **kavramsaldır**; birebir 
 
 Tablolardan daha önemli olan üç yapısal fark:
 
-**1. Kayıt merkezi yoktur.** .NET'te "bu servis kayıtlı mı" sorusu `Program.cs` dosyasında cevaplanır. CDI'da cevap sınıfın kendisindedir. Bileşeni taşıdığınızda kapsamı da gelir; ama eksik anotasyonu görebileceğiniz merkezi bir liste de yoktur.
+**1. Kayıt merkezi yoktur.** .NET'te "bu servis kayıtlı mı" sorusu genelde `Program.cs` dosyasında cevaplanır. CDI'da cevap sınıfın kendisindedir. Bileşeni taşıdığınızda kapsamı *(scope)* da gelir; ama eksik anotasyonu görebileceğiniz merkezi bir liste de yoktur.
 
-**2. Spesifikasyon ile implementasyon ayrıdır.** EF Core hem arayüz hem implementasyondur. JPA yalnızca arayüzdür; Hibernate ya da EclipseLink implementasyondur. `pom.xml` dosyanızda implementasyonun adı hiç geçmeyebilir — ve bu, sunucu değiştirdiğinizde kodun değişmemesi anlamına gelir.
+**2. Spesifikasyon ile implementasyon ayrıdır.** EF Core hem arayüz hem implementasyondur. JPA yalnızca arayüzdür; **Hibernate** ya da **EclipseLink** implementasyondur. `pom.xml` dosyanızda implementasyonun adı hiç geçmeyebilir — ve bu, sunucu değiştirdiğinizde kodun değişmemesi anlamına gelir.
 
-**3. Anotasyon = davranış.** C#'ta attribute'lar çoğunlukla meta veridir; bir şeyin onları okuması gerekir. Jakarta EE'de anotasyon doğrudan container davranışını tetikler. `@Transactional` yazdığınızda transaction gerçekten başlar; başka hiçbir kayıt gerekmez.
+**3. Anotasyon = davranış.** C#'ta attribute'lar çoğunlukla meta veridir; bir şeyin onları okuması gerekir *(Genellikle bir çalışma zamanında)*. Jakarta EE'de anotasyon doğrudan container davranışını tetikler. `@Transactional` yazdığınızda transaction gerçekten başlar; başka hiçbir kayıt gerekmez.
 
 ## Yanıltıcı Benzerlikler
 
-- **`@Inject` ≠ kurucu enjeksiyonu zorunluluğu.** Java'da alan enjeksiyonu da mümkündür ve yaygındır; ancak `arch-guard-lab` ADR-0004 bunu test edilebilirlik gerekçesiyle yasaklar.
+- **`@Inject` ≠ kurucu enjeksiyonu zorunluluğu.** Java'da alan enjeksiyonu da mümkündür ve yaygındır ancak `arch-guard-lab` ADR-0004 bunu test edilebilirlik gerekçesiyle yasaklar.
 - **JPQL ≠ SQL.** `SELECT g FROM Game g` sorgusundaki `Game`, tablo adı değil entity adıdır.
 - **`merge` ≠ `Update`.** `merge`, verdiğiniz nesneyi değil, yeni bir yönetilen kopyayı döndürür.
 - **`@ApplicationScoped` ≠ `static`.** Proxy üzerinden erişilir ve thread güvenliği size aittir.

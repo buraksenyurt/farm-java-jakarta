@@ -22,18 +22,18 @@ public interface PaymentProcessor {
 }
 ```
 
-Ve bu soyutlamayı gerçekleyen **iki** bileşen: `CreditCardProcessor` ve `CryptoProcessor`. Servis sınıfında basitçe şunu yazarsak:
+Ve bu soyutlamayı gerçekleyen n adet bileşen, örneğin: `CreditCardProcessor` ve `CryptoProcessor`. Servis sınıfında basitçe şunu yazarsak:
 
 ```java
 @Inject
 private PaymentProcessor paymentProcessor;
 ```
 
-CDI'ın çözmesi gereken bir belirsizlik *(ambiguous dependency)* doğar: iki adaydan hangisi enjekte edilecek? Container bu durumda deploy anında `AmbiguousResolutionException` fırlatır. Yani hata çalışma zamanında ilk istekte değil, uygulama ayağa kalkarken önümüze gelir; bu iyi bir şeydir.
+CDI'ın çözmesi gereken bir belirsizlik *(ambiguous dependency)* doğar: **iki adaydan hangisi enjekte edilecek?** Container bu durumda deploy anında `AmbiguousResolutionException` istisnası fırlatır. Yani hata çalışma zamanında ilk istekte değil, uygulama ayağa kalkarken önümüze gelir ki bu pek de isteyeceğimiz bir şey değildir. Kodun başarılı derlendiği ama üretim ortamına geçtikten sonra bu hatanın alındığını düşünelim.
 
 ## Çözüm: Kendi Qualifier'ımızı Yazmak
 
-Qualifier, bir anotasyonun "DI için ayırt edici etiket" haline gelmesidir.
+Qualifier, bir anotasyonun "Dependency Injection mekanizması için ayırt edici etiket" haline gelmesidir.
 
 ```java
 @Qualifier                                   // CDI'a bunun bir ayırt edici olduğunu söyler
@@ -43,7 +43,7 @@ public @interface Crypto {
 }
 ```
 
-Etiketi implementasyona takarız:
+Etiketi implementasyona ekleriz:
 
 ```java
 @ApplicationScoped
@@ -68,8 +68,8 @@ public class InvoiceAcceptService {
 
 ## Nasıl Çalışır?
 
-1. Hiçbir qualifier belirtilmeyen her bean örtük olarak `@Default` qualifier'ı taşır. `CreditCardProcessor` bu yüzden çıplak `@Inject` ile gelir.
-2. Bir bean'e açık bir qualifier (`@Crypto`) eklendiğinde, o bean **artık `@Default` değildir**. Bu, iki aday arasındaki belirsizliği ortadan kaldıran asıl mekanizmadır.
+1. Hiçbir qualifier belirtilmeyen her bean varsayılan olarak `@Default` qualifier'ı taşır. `CreditCardProcessor` bu yüzden çıplak `@Inject` ile gelir.
+2. Bir bean'e açık bir qualifier *(`@Crypto`)* eklendiğinde, o bean artık `@Default` değildir. Bu, iki aday arasındaki belirsizliği ortadan kaldıran asıl mekanizmadır.
 3. Çözümleme *(resolution)* tip + qualifier kümesi üzerinden yapılır ve deploy sırasında doğrulanır.
 
 ## .NET Tarafından Bakınca
@@ -81,7 +81,7 @@ services.AddKeyedScoped<IPaymentProcessor, CryptoProcessor>("crypto");
 public InvoiceAcceptService([FromKeyedServices("crypto")] IPaymentProcessor p) { }
 ```
 
-Aradaki fark yüzeysel değil: .NET'te anahtar bir **string**'tir ve merkezi bir kayıt noktasında (`Program.cs`) tanımlanır. Java'da anahtar bir **tip**'tir, derleyici tarafından denetlenir ve kayıt merkezi yoktur — bileşen kendi kapsamını ve etiketini kendi üzerinde taşır. Yazım hatası yapma ihtimaliniz olan bir string yerine, yanlış yazarsanız derlenmeyen bir anotasyon.
+Aradaki fark yüzeysel değil: .NET'te anahtar bir **string**'tir ve merkezi bir kayıt noktasında *(kuvvetle muhtemel `Program.cs`)* tanımlanır. Java'da anahtar bir **tip**'tir, derleyici tarafından denetlenir ve kayıt merkezi yoktur — bileşen kendi kapsamını ve etiketini kendi üzerinde taşır. Yazım hatası yapma ihtimaliniz olan bir string yerine, yanlış yazarsanız derlenmeyen bir anotasyon. *(Bu kontrol edilmeli. .Net'in ilerleyen sürümlerinde tip güvenl-type safe bir çözüm gelmiş olabilir. Araştıralım)*
 
 ## Kapsam Farkı
 
@@ -103,9 +103,9 @@ curl http://localhost:8080/cdi-concept/api/payment/crypto
 ## Tuzaklar
 
 - **`@Retention(RUNTIME)` unutulursa** anotasyon derleme sonrası silinir; CDI onu göremez ve yine belirsizlik hatası alırsınız. Sessiz bir hata değildir ama nedeni ilk bakışta anlaşılmaz.
-- **İki implementasyona da qualifier vermek** belirsizliği çözmez, sadece taşır: artık çıplak `@Inject` hiçbir adayı bulamaz ve `UnsatisfiedResolutionException` alırsınız.
+- **İki implementasyona da qualifier vermek** belirsizliği çözmez, sadece taşır: İşaretsiz `@Inject` bildirimi artık hiçbir adayı bulamaz ve `UnsatisfiedResolutionException` alırsınız.
 - **`beans.xml` içindeki `bean-discovery-mode="annotated"`** ile çalışıyorsanız, implementasyonlarınızda bir kapsam anotasyonu bulunmak zorundadır. Çıplak bir POJO taranmaz ve aday listesine hiç girmez.
-- Qualifier'lar üyeli *(member)* de olabilir (`@Payment(type = CRYPTO)`). Bu, her varyasyon için ayrı anotasyon yazmaktan kurtarır; `@Nonbinding` ile hangi üyenin çözümlemeye dahil olmayacağını da belirleyebilirsiniz.
+- Qualifier'lar üyeli *(member)* de olabilir *(`@Payment(type = CRYPTO)`)*. Bu, her varyasyon için ayrı anotasyon yazmaktan kurtarır. `@Nonbinding` ile hangi üyenin çözümlemeye dahil olmayacağını da belirleyebilirsiniz.
 
 ## İlgili Sayfalar
 

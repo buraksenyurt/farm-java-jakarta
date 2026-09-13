@@ -64,7 +64,7 @@ public Response create(@Valid Game game, @Context UriInfo uriInfo) { ... }
 
 ## Hatanın İstemciye Dönüşü
 
-Doğrulama başarısız olursa çalışma zamanına `ConstraintViolationException` istisnası fırlar. Varsayılan yanıt, istemci için hiçbir şey ifade etmeyen bir `500` mesajı olurdu. Eşleyici bunu okunabilir hale getirir:
+Doğrulama başarısız olursa çalışma zamanına `ConstraintViolationException` istisnası fırlar. Varsayılan yanıt, istemci için hiçbir şey ifade etmeyen bir `500` mesajı olurdu. Eşleyici *(Mapper)* bunu okunabilir hale getirir.
 
 ```java
 @Provider
@@ -90,28 +90,28 @@ Sonuç:
 { "errors": ["Oyun başlığı boş olamaz", "Topluluk puanı 1 den büyük, 10'dan küçük olmalıdır"] }
 ```
 
-Tek tek değil, **tüm** ihlaller birlikte döner. Formu dolduran kullanıcı hataları tek seferde görür.
+İhlaller tek tek değil birlikte döner. Bu da formu dolduran kullanıcının hataları tek seferde görmesini kolaylaştırır.
 
 ## Sık Kullanılan Kısıtlar
 
-| **Anotasyon** | **Ne kontrol eder** | **Not** |
+| **Anotasyon** | **Neyi kontrol eder** | **Not** |
 | --- | --- | --- |
 | `@NotNull` | `null` değil | Boş string geçerlidir |
 | `@NotEmpty` | `null` değil ve boş değil | String, koleksiyon, dizi |
 | `@NotBlank` | `null` değil ve sadece boşluk değil | Yalnızca String |
 | `@Size(min, max)` | Uzunluk | String ve koleksiyon |
 | `@Min` / `@Max` | Sayısal sınır | |
-| `@Positive` | Sıfırdan büyük | `@PositiveOrZero` de vardır |
-| `@Pattern` | Düzenli ifade | `memo-app` kullanır |
-| `@FutureOrPresent` | Tarih bugün ya da sonrası | `todo-app` kullanır |
+| `@Positive` | Sıfırdan büyük | `@PositiveOrZero` anotasyonu da var |
+| `@Pattern` | Düzenli ifade *(Regular Expression)* | `memo-app` örneğimizde var |
+| `@FutureOrPresent` | Tarih alanında bugün ya da sonrası | `todo-app` örneğinde var |
 
 ## Tuzaklar
 
 - **`@Valid` unutmak.** Sessiz başarısızlık; hiçbir doğrulama yapılmaz.
-- **`@NotNull` ile `@NotBlank` karıştırmak.** `""` değeri `@NotNull` kontrolünü geçer.
-- **Entity üzerinde doğrulama yaparken JPA katmanını unutmak.** Anotasyonlar `persist`/`update` sırasında da çalışır; REST katmanında yakalanmayan bir ihlal commit anında patlar ve bu kez `400` değil `500` alırsınız.
-- **İş kurallarını anotasyona sıkıştırmaya çalışmak.** Bağlam gerektiren her kural servis katmanına aittir.
-- **`message` vermemek.** Varsayılan mesajlar İngilizce ve genel olur.
+- **`@NotNull` ile `@NotBlank` anotasyonlarını karıştırmak.** `""` değeri `@NotNull` kontrolünü geçer.
+- **Entity üzerinde doğrulama yaparken JPA katmanını unutmak.** Anotasyonlar `persist`/`update` sırasında da çalışır. REST katmanında yakalanmayan bir ihlal commit anında patlar ve bu kez `400 Not Found` değil `500 Internal Server Error` hatası alırsınız.
+- **İş kurallarını anotasyona sıkıştırmaya çalışmak.** Belli bir kapsam *(Context)* gerektiren her kural servis katmanına aittir.
+- **`message` vermemek.** Varsayılan mesajların İngilizce olması tercih edilir.
 
 ## İlgili Sayfalar
 

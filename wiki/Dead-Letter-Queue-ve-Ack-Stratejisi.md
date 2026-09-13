@@ -10,9 +10,9 @@
 
 ## Soru
 
-Bir mesaj işlenirken hata alırsanız ne olmalı? Üç kötü cevap ve bir iyi cevap vardır.
+Bir mesaj işlenirken hata alırsanız ne olması gerekir? Üç kötü cevap ve bir iyi cevap vardır.
 
-| Yaklaşım | Sonuç |
+| **Yaklaşım** | **Sonuç** |
 | --- | --- |
 | Mesajı onayla ve geç | Veri sessizce kaybolur |
 | Hiçbir şey yapma | Mesaj onaysız kalır, kuyruk tıkanır |

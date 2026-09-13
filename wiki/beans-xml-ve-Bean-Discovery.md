@@ -6,7 +6,7 @@
 | --- | --- |
 | **Ne işe yarar** | CDI motorunun hangi sınıfları bean olarak tarayacağını belirler |
 | **Anahtar** | `bean-discovery-mode="annotated"` |
-| **.NET karşılığı** | `Program.cs` içindeki servis kayıtları — ama tersine çevrilmiş biçimde |
+| **.NET karşılığı** | `Program.cs` içindeki servis kayıtları — ama tersine çevrilmiş biçimde *(DI Register işlemlerini hatırlayalım)* |
 
 ## Dosya
 
@@ -20,42 +20,40 @@
 </beans>
 ```
 
-İçi boştur ve öyle olması gerekir. Dosyanın varlığı ve tek bir özniteliği, tüm bağımlılık yönetiminin nasıl kurulacağını belirler.
+Buradaki en önemli nitelik `bean-discovery-mode` niteliğidir. Nelerin taranacağını ve hangi sınıfların CDI tarafından yönetileceğini belirler.
 
 ## Perde Arkası: Weld
 
-Payara, WildFly, JBoss EAP, GlassFish gibi sunucular içlerinde bir CDI motoru barındırır. Literatürde **Weld** olarak geçer. Bu motor deploy anında arşivi tarar, bean adaylarını bulur, bağımlılık grafiğini kurar ve doğrular.
+Payara, WildFly, JBoss EAP, GlassFish gibi sunucular içlerinde bir **CDI** motoru barındırır. Literatürde **Weld** olarak da geçer. Bu motor paket dağıtımı *(deployment)* anında arşivi tarar, **bean** adaylarını bulur, bağımlılık grafiğini *(dependency graph)* kurar ve doğrular.
 
 `bean-discovery-mode` değerini okuyan işte bu motordur.
 
 ## Üç Mod
 
-| Mod | Ne taranır | Sonuç |
+| **Mod** | **Ne taranır** | **Sonuç** |
 | --- | --- | --- |
 | `all` | Arşivdeki tüm sınıflar | Gereksiz tarama, yavaş başlangıç |
-| `annotated` | Yalnızca bean tanımlayıcı anotasyon taşıyanlar | Bu depoda kullanılan mod |
-| `none` | Hiçbiri | CDI fiilen kapalı |
+| `annotated` | Yalnızca bean tanımlayıcı anotasyonu taşıyanlar | Bu depodaki örneklerde bu modu kullanıyoruz |
+| `none` | Hiçbiri | CDI fiilen kapalı *(Neden tercih ederiz sorusuna cevap bulunmalı?)* |
 
-`annotated` modunda bir sınıfın bean olabilmesi için üzerinde bir **bean defining annotation** bulunmalıdır: `@ApplicationScoped`, `@RequestScoped`, `@SessionScoped`, `@Dependent`, `@Interceptor` ve benzerleri.
+`annotated` modunda bir sınıfın bean olabilmesi için üzerinde bir **bean defining annotation** bulunmalıdır. Örneğin: `@ApplicationScoped`, `@RequestScoped`, `@SessionScoped`, `@Dependent`, `@Interceptor` ve benzerleri.
 
 ## .NET Tarafından Bakınca
 
-.NET'te kayıt merkezîdir; her servisi `Program.cs` içinde tek tek bildirirsiniz:
+.NET'te DI Register işlemleri bu şekilde yapılır. Her servisi `Program.cs` içinde tek tek bildiririz ya da `IServiceCollection` arayüzünü genişletip *(extension method)* merkezi bir kayıt noktası oluşturabiliriz.
 
 ```csharp
 services.AddScoped<ITodoService, TodoService>();
 ```
 
-CDI'da kayıt **dağıtıktır**. Her sınıf kendi kapsamını kendi üzerinde taşır ve motor onu bulur. Merkezi bir liste yoktur.
-
-Bunun bedeli şudur: .NET'te "bu servis kayıtlı mı" sorusunun cevabı tek bir dosyadadır. CDI'da cevap sınıfın kendisindedir — ve anotasyonu unuttuysanız hiçbir yerde eksik bir satır göremezsiniz.
+CDI'da kayıt sistemi dağıtık yapıdadır. Her sınıf kendi kapsamını kendi üzerinde taşır ve motor onu bulur. Merkezi bir liste yoktur. Bunun Java dünyası açısından bakılınca şöyle bir dezavantajı olabilir; .NET'te "bu servis kayıtlı mı?" sorusunun cevabı tek bir dosyadadır. CDI'da ise cevap sınıfın kendisindedir ve anotasyonu unuttuysanız hiçbir yerde eksik bir satır göremezsiniz.
 
 ## Tuzaklar
 
-- **Anotasyonu unutulan sınıf** hiç taranmaz, aday listesine girmez ve `@Inject` noktasında `UnsatisfiedResolutionException` alırsınız. Hata mesajı "sınıfını bulamadım" demez, "tatmin edilemeyen bağımlılık" der.
-- **`beans.xml` dosyasının hiç bulunmaması.** CDI 4.x'te `annotated` mod zaten varsayılandır; ancak dosyayı açıkça koymak niyeti görünür kılar.
-- **Yanlış klasör.** Dosya WAR içinde `WEB-INF/` altında olmalıdır; `META-INF/` altına konması JAR arşivleri içindir.
-- **Şema sürümü uyumsuzluğu.** `beans_4_0.xsd` Jakarta EE 10+ içindir; eski `beans_1_1.xsd` ile karıştırılmamalıdır.
+- **Anotasyonu unutulan sınıf** hiç taranmaz, aday listesine girmez ve `@Inject` ile bileşen bildirimi yapılan yerlerde `UnsatisfiedResolutionException` alırsınız. Hata mesajı "sınıfını bulamadım" demez, "tatmin edilemeyen bağımlılık" der. *(Bunu gerçeken deneyip ispat etmeye çalışmalıyız!)*
+- **`beans.xml` dosyasının hiç bulunmaması.** CDI 4.x'te `annotated` mod zaten varsayılandır ancak dosyayı açıkça koymak niyeti görünür kılar. *(Bunda ne sakınca olabilir?)*
+- **Yanlış klasör.** Dosya WAR içinde `WEB-INF/` altında olmalıdır. `META-INF/` altına konması JAR arşivleri içindir.
+- **Şema sürüm uyumsuzluğu.** `beans_4_0.xsd` Jakarta EE 10+ içindir ve eski `beans_1_1.xsd` ile karıştırılmamalıdır.
 
 ## İlgili Sayfalar
 
