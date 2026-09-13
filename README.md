@@ -863,9 +863,32 @@ Kabaca neler olduğuna bir bakalım.
 
 Test sınıfını çalıştırarak `com.lectures.archguard.domain` paketinde en az bir sınıfın varlığını doğrulayabiliriz.
 
-![ArchUnit_01](./images/ArchUnit_01.png)
+  ![ArchUnit_01](./images/ArchUnit_01.png)
 
-// DEVAM EDECEK
+Tüm kabul kriterleri `com.lectures.archguard.architecture` paketinde yer almaktadır. Örnekte kullandığımız ArchTest sınıfları ile kodlama ilkeleri, mimari kurallar, bağımlılıkların yönü, isimlendirme standartları gibi çeşitli senaryolar denetlenir. Bu arada NetBeans tarafında birde properites dosyası kullanıyoruz, `archunit.properites`
+
+```properties
+resolveMissingDependenciesFromClassPath=false
+archRule.failOnEmptyShould=true
+junit.displayName.replaceUnderscoresBySpaces=true
+```
+
+İlk satır ile, analiz edilen paketin dışındaki sınıfları *(JDK, Jakarta EE, üçüncü taraf kütüphaneler vb.)* otomatik olarak çözümlemeyi kapatmasını sağlıyoruz. Bu analizin belirgin şekilde hızlanması için önerilen bir yaklaşım. İkinci satırda ise, herhangi bir ArchUnit kuralının boş olması durumunda testin başarısız olmasını sağlıyoruz *(ki varsayılan olarak bu değer true)*. Son atırda ise, JUnit testlerinde kural isimlerindeki alt çizgilerin boşluk ile değiştirilmesini sağlıyoruz. Yani adr001_layers yerine `adr001 layers` şeklinde bir görüntüleme sağlanıyor. Biraz makyaj yapmış olduk.
+
+Komut satırından projeyi aşağıdaki gibi test edebiliriz;
+
+```bash
+# Root dizinden test edeceksek bu şekilde
+mvn -pl arch-guard-lab test
+```
+
+![ArchUnit_02](./images/ArchUnit_02.png)
+
+### İhlalleri Görmek
+
+ArchUnit testlerindeki ihlalleri görmek için deneyebileceğimiz örnek senarylara bakalım.
+
+// EKLENECEK
 
 ## FAQ
 
