@@ -1063,6 +1063,55 @@ Bunu denemek oldukça basit. Örneğin **JpaBookRepository** sınıfını **Book
 
 ![Test Results ADR3](./images/ArchUnit_05.png)
 
+4. Field seviyesinde injection ve loglama kullanım ihlali
+
+Örnek olarak `LoanService` sınıfındaki borrow metodunda BookRepository türünden bileşeni uygulama seviyesinde enjekte ettiğimizi ve loglama amacıyla fonksiyonlarda `System.out.println` kullandığımızı düşünelim. Sıklıkla bilgi almak için bu tip basit loglamalar kullanabiliriz ancak ADR kurallarına göre bu tür kullanımlar ihlal olarak değerlendirilecektir.
+
+```java
+@ApplicationScoped
+public class LoanService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoanService.class);
+
+    @Inject
+    private final BookRepository bookRepository;
+
+    protected LoanService() {
+        this.bookRepository = null;
+    }
+
+    @Inject
+    public LoanService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
+    public List<Book> listAll() {
+        System.out.println("Listing all books");
+        return bookRepository.findAll();
+    }
+
+    public Book borrow(Isbn isbn) {
+        Book book = bookRepository.findByIsbn(isbn)
+                .orElseThrow(() -> new BookNotFoundException(isbn));
+        book.borrow(LocalDate.now());
+        bookRepository.save(book);
+        // LOGGER.info("Book borrowed {}", isbn.value());
+        System.out.println("Book borrowed: " + book.title());
+        return book;
+    }
+}
+```
+
+Buna göre test sonucu aşağıdaki gibi olacaktır.
+
+```bash
+mvn -pl arch-guard-lab test
+```
+
+![Test Results ADR4](./images/ArchUnit_06.png)
+
+> ArchUnit kullanımı ile ilgili daha detaylı bilgi için [buradaki öğretiyi de](https://www.archunit.org/getting-started) inceleyebilirsiniz.
+
 ---
 
 ## FAQ
